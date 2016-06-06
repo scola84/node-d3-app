@@ -5,11 +5,19 @@ import { select } from 'd3-selection';
 export default class Menu {
   constructor(options) {
     this.options = Object.assign({
-      hideThreshold: '64em',
-      menuWidth: '21em'
+      hideAt: '64em',
+      width: '21.333em',
+      position: 'left',
+      mode: 'over'
     }, options);
 
     this.fixed = false;
+    this.visible = false;
+
+    this._container = null;
+    this._position = null;
+
+    this.position(this.options.position);
     this.build();
   }
 
@@ -17,52 +25,178 @@ export default class Menu {
     this.outer = select(document.createElement('div'))
       .classed('scola menu', true)
       .styles({
-        'border-right': '1px solid #CCC',
+        'border': '0 solid #CCC',
+        'display': 'none',
         'height': '100%',
         'position': 'absolute',
-        'width': this.options.menuWidth,
-        'z-index': 1
-      })
-      .media('not all and (min-width: ' + this.options.menuWidth + ')')
+        'width': this.options.width,
+        'z-index': this.options.mode === 'under' ? -1 : 1
+      });
+
+    this.border();
+
+    this.media = this.outer
+      .media('not all and (min-width: ' + this.options.width + ')')
       .style('width', '90%')
-      .media('not all and (min-width: ' + this.options.hideThreshold + ')')
-      .style('left', '-' + this.options.menuWidth)
-      .call(() => {
-        this.fixed = false;
-      })
-      .media('(min-width: ' + this.options.hideThreshold + ')')
-      .style('left', 0)
-      .call(() => {
-        this.fixed = true;
-      })
+      .media('not all and (min-width: ' + this.options.fixAt + ')')
+      .call(() => this.unfix())
+      .media('(min-width: ' + this.options.fixAt + ')')
+      .call(() => this.fix())
       .start();
 
-    this.outer.gesture().on('tap', (event) => {
-      event.stopPropagation();
-    });
+    this.gesture = this.outer.gesture()
+      .on('tap', (event) => {
+        if (!this.fixed) {
+          event.stopPropagation();
+        }
+      });
+  }
+
+  border() {
+    this.outer
+      .style('border-' + this._position + '-width', 0)
+      .style('border-' + this.opposite(this._position) + '-width', 1);
   }
 
   destroy() {
-    this.outer.remove();
+    this.gesture.off('tap');
+    this.gesture.destroy();
+    this.media.destroy();
+
+    if (this._container) {
+      this._container.remove(this);
+    } else {
+      this.node().remove();
+    }
+  }
+
+  container(container) {
+    if (container) {
+      this._container = container;
+      return this;
+    }
+
+    return this._container;
+  }
+
+  position(position) {
+    if (position) {
+      if (this._position) {
+        this.outer.style(this._position, null);
+      }
+
+      this._position = position;
+
+      if (this.outer) {
+        this.border();
+      }
+
+      return this;
+    }
+
+    return this._position;
+  }
+
+  mode() {
+    return this.options.mode;
   }
 
   node() {
     return this.outer.node();
   }
 
+  width() {
+    return this.options.width;
+  }
+
+  fix() {
+    this.outer
+      .style('display', 'block')
+      .style(this._position, 0);
+
+    this.fixed = true;
+    this.visible = true;
+
+    if (this._container) {
+      this._container.fixAll();
+    }
+  }
+
+  unfix() {
+    this.outer
+      .style('display', 'none')
+      .style(this._position, this.options.mode === 'under' ?
+        0 : '-' + this.options.width);
+
+    this.fixed = false;
+    this.visible = false;
+
+    if (this._container) {
+      this._container.fixAll();
+    }
+  }
+
   show() {
-    if (this.fixed || parseInt(this.outer.style('left'), 10) === 0) {
-      return;
+    if (this.fixed || this.visible) {
+      return false;
     }
 
-    this.outer.transition().style('left', '0');
+    this.outer.style('display', 'block');
+
+    if (this.options.mode !== 'under') {
+      this.outer.transition().style(this._position, '0');
+    }
+
+    this.visible = true;
+
+    if (this._container) {
+      this._container.show(this);
+    }
+
+    return true;
   }
 
   hide() {
-    if (this.fixed || parseInt(this.outer.style('left'), 10) !== 0) {
-      return;
+    if (this.fixed || !this.visible) {
+      return false;
     }
 
-    this.outer.transition().style('left', '-' + this.options.menuWidth);
+    if (this.options.mode !== 'under') {
+      this.outer.transition().style(this._position, '-' + this.options.width);
+    }
+
+    this.visible = false;
+
+    if (this._container) {
+      this._container.hide(this, () => {
+        this.outer.style('display', 'none');
+      });
+    }
+
+    return true;
+  }
+
+  reset() {
+    if (this.fixed) {
+      this.fix();
+    } else {
+      this.unfix();
+    }
+
+    return this;
+  }
+
+  toggle() {
+    if (this.visible) {
+      this.hide();
+    } else {
+      this.show();
+    }
+
+    return this;
+  }
+
+  opposite(position) {
+    return position === 'left' ? 'right' : 'left';
   }
 }
