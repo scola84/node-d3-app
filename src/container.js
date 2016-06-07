@@ -12,7 +12,8 @@ export default class Container {
   }
 
   build() {
-    this.outer = select(document.createElement('div'))
+    this.outer = select('body')
+      .append('div')
       .classed('scola app', true)
       .styles({
         'position': 'relative',
@@ -57,10 +58,11 @@ export default class Container {
   }
 
   destroy() {
-    this.gesture
-      .off('tap swiperight swipeleft')
-      .destroy();
+    this.menus.forEach((menu) => {
+      menu.destroy();
+    });
 
+    this.gesture.destroy();
     this.media.destroy();
     this.outer.remove();
   }

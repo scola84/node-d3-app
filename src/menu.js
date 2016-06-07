@@ -3,7 +3,9 @@
 import { select } from 'd3-selection';
 
 export default class Menu {
-  constructor(options) {
+  constructor(container, options) {
+    this.container = container;
+
     this.options = Object.assign({
       hideAt: '64em',
       width: '21.333em',
@@ -14,7 +16,6 @@ export default class Menu {
     this.fixed = false;
     this.visible = false;
 
-    this._container = null;
     this._position = null;
 
     this.position(this.options.position);
@@ -59,24 +60,14 @@ export default class Menu {
   }
 
   destroy() {
-    this.gesture.off('tap');
     this.gesture.destroy();
     this.media.destroy();
 
-    if (this._container) {
-      this._container.remove(this);
+    if (this.container) {
+      this.container.remove(this);
     } else {
       this.node().remove();
     }
-  }
-
-  container(container) {
-    if (container) {
-      this._container = container;
-      return this;
-    }
-
-    return this._container;
   }
 
   position(position) {
@@ -117,8 +108,8 @@ export default class Menu {
     this.fixed = true;
     this.visible = true;
 
-    if (this._container) {
-      this._container.fixAll();
+    if (this.container) {
+      this.container.fixAll();
     }
   }
 
@@ -131,8 +122,8 @@ export default class Menu {
     this.fixed = false;
     this.visible = false;
 
-    if (this._container) {
-      this._container.fixAll();
+    if (this.container) {
+      this.container.fixAll();
     }
   }
 
@@ -149,8 +140,8 @@ export default class Menu {
 
     this.visible = true;
 
-    if (this._container) {
-      this._container.show(this);
+    if (this.container) {
+      this.container.show(this);
     }
 
     return true;
@@ -167,8 +158,8 @@ export default class Menu {
 
     this.visible = false;
 
-    if (this._container) {
-      this._container.hide(this, () => {
+    if (this.container) {
+      this.container.hide(this, () => {
         this.outer.style('display', 'none');
       });
     }

@@ -1,10 +1,16 @@
 import Container from './src/container';
 import Menu from './src/menu';
 
-export function menu(options) {
-  return new Menu(options);
-}
+let instance = null;
 
 export function container(options) {
-  return new Container(options);
+  if (!instance) {
+    instance = new Container(options);
+  }
+
+  return instance;
+}
+
+export function menu(options) {
+  return new Menu(container(), options);
 }
