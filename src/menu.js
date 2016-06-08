@@ -23,7 +23,8 @@ export default class Menu {
   }
 
   build() {
-    this.outer = select(document.createElement('div'))
+    this.outer = select('body')
+      .append('div')
       .classed('scola menu', true)
       .styles({
         'border': '0 solid #CCC',
