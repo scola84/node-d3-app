@@ -72,7 +72,7 @@ export default class Container {
   }
 
   append(menu) {
-    this.menus.add(menu.container(this));
+    this.menus.add(menu);
     this.node().appendChild(menu.reset().node());
 
     return this;

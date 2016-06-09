@@ -7,7 +7,7 @@ export default class Menu {
     this.container = container;
 
     this.options = Object.assign({
-      hideAt: '64em',
+      fixAt: '64em',
       width: '21.333em',
       position: 'left',
       mode: 'over'
