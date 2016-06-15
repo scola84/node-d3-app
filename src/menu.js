@@ -1,6 +1,7 @@
 /* eslint prefer-reflect: "off" */
 
 import { select } from 'd3-selection';
+import { slider } from '@scola/d3-slider';
 
 export default class Menu {
   constructor(container, options) {
@@ -58,6 +59,15 @@ export default class Menu {
     this.outer
       .style('border-' + this._position + '-width', 0)
       .style('border-' + this.opposite(this._position) + '-width', 1);
+  }
+
+  slider() {
+    if (!this._slider) {
+      this._slider = slider();
+      this.outer.node().appendChild(this._slider.root().node());
+    }
+
+    return this._slider;
   }
 
   destroy() {

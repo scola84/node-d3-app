@@ -1,4 +1,5 @@
 import { select } from 'd3-selection';
+import { slider } from '@scola/d3-slider';
 
 export default class Container {
   constructor(options) {
@@ -65,6 +66,15 @@ export default class Container {
     this.gesture.destroy();
     this.media.destroy();
     this.outer.remove();
+  }
+
+  slider() {
+    if (!this._slider) {
+      this._slider = slider();
+      this.inner.node().appendChild(this._slider.root().node());
+    }
+
+    return this._slider;
   }
 
   node() {
