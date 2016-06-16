@@ -2,18 +2,17 @@ import { select } from 'd3-selection';
 import { slider } from '@scola/d3-slider';
 
 export default class Container {
-  constructor(options) {
-    this.options = Object.assign({
-      height: '48em',
-      width: '64em'
-    }, options);
+  constructor() {
+    this._menus = new Set();
 
-    this.menus = new Set();
-    this.build();
-  }
+    this._width = null;
+    this._height = null;
+    this._styles = null;
 
-  build() {
-    this.outer = select('body')
+    this._gesture = null;
+    this._media = null;
+
+    this._root = select('body')
       .append('div')
       .classed('scola app', true)
       .styles({
@@ -21,21 +20,7 @@ export default class Container {
         'z-index': 0
       });
 
-    this.media = this.outer
-      .media('(min-height: ' + this.options.height + ')')
-      .style('height', this.options.height)
-      .media('not all and (min-height: ' + this.options.height + ')')
-      .style('height', '100%')
-      .media('(min-width: ' + this.options.width + ')')
-      .style('width', this.options.width)
-      .media('not all and (min-width: ' + this.options.width + ')')
-      .styles({
-        'width': '100%',
-        'height': '100%'
-      })
-      .start();
-
-    this.inner = this.outer.append('div')
+    this._inner = this._root.append('div')
       .classed('scola inner', true)
       .styles({
         'height': '100%',
@@ -43,54 +28,107 @@ export default class Container {
         'position': 'absolute',
         'right': 0
       });
+  }
 
-    this.gesture = this.outer.gesture()
-      .on('tap', () => {
-        this.change();
-      })
-      .on('swiperight', () => {
-        this.change('left');
-      })
-      .on('swipeleft', () => {
-        this.change('right');
-      });
+  destroy() {
+    this._menus.forEach((menu) => {
+      menu.destroy();
+    });
+
+    if (this._gesture) {
+      this._gesture.destroy();
+    }
+
+    if (this._media) {
+      this._media.destroy();
+    }
+
+    this._root.remove();
+  }
+
+  height() {
+    return this._height;
+  }
+
+  root() {
+    return this._root;
+  }
+
+  styles() {
+    return this._styles;
+  }
+
+  width() {
+    return this._width;
+  }
+
+  gesture() {
+    if (this._gesture) {
+      return this._gesture;
+    }
+
+    this._gesture = this._root
+      .gesture()
+      .on('tap', () => this._change())
+      .on('swiperight', () => this._change('left'))
+      .on('swipeleft', () => this._change('right'));
 
     return this;
   }
 
-  destroy() {
-    this.menus.forEach((menu) => {
-      menu.destroy();
-    });
+  media(width, height, styles = {}) {
+    if (!width) {
+      return this._media;
+    }
 
-    this.gesture.destroy();
-    this.media.destroy();
-    this.outer.remove();
+    this._width = width;
+    this._height = height;
+    this._styles = styles;
+
+    if (this._media) {
+      this._media.destroy();
+    }
+
+    this._media = this._root
+      .media(`(min-height: ${height}) and (min-width: ${width})`)
+      .styles(styles)
+      .media(`(min-height: ${height})`)
+      .style('height', height)
+      .media(`not all and (min-height: ${height})`)
+      .style('height', '100%')
+      .media(`(min-width: ${width})`)
+      .style('width', width)
+      .media(`not all and (min-width: ${width})`)
+      .styles({
+        'width': '100%',
+        'height': '100%'
+      })
+      .start();
+
+    return this;
   }
 
   slider() {
-    if (!this._slider) {
-      this._slider = slider();
-      this.inner.node().appendChild(this._slider.root().node());
+    if (this._slider) {
+      return this._slider;
     }
 
-    return this._slider;
-  }
+    this._slider = slider();
+    this._inner.node().appendChild(this._slider.root().node());
 
-  node() {
-    return this.outer.node();
+    return this;
   }
 
   append(menu) {
-    this.menus.add(menu);
-    this.node().appendChild(menu.reset().node());
+    this._menus.add(menu);
+    this._root.node().appendChild(menu.reset().root().node());
 
     return this;
   }
 
   remove(menu) {
-    this.menus.delete(menu);
-    menu.node().remove();
+    this._menus.delete(menu);
+    menu.root().node().remove();
 
     return this;
   }
@@ -101,63 +139,69 @@ export default class Container {
       right: 0
     };
 
-    this.menus.forEach((menu) => {
-      if (menu.fixed) {
+    this._menus.forEach((menu) => {
+      if (menu.fixed()) {
         style[menu.position()] = menu.width();
       } else {
         menu.hide();
       }
     });
 
-    this.inner.styles(style);
+    this._inner.styles(style);
+
+    return this;
   }
 
   show(menu, callback) {
     if (menu.mode() === 'over') {
-      return;
+      return this;
     }
 
-    const opposite = this.opposite(menu.position());
+    const opposite = this._opposite(menu.position());
     let oppositePosition = '-' + menu.width();
 
-    this.menus.forEach((item) => {
+    this._menus.forEach((item) => {
       if (item.position() === opposite && item.fixed) {
         oppositePosition = '0';
       }
     });
 
-    this.inner
+    this._inner
       .transition()
       .style(menu.position(), menu.width())
       .style(opposite, oppositePosition)
       .on('end', callback);
+
+    return this;
   }
 
   hide(menu, callback) {
     if (menu.mode() === 'over') {
-      return;
+      return this;
     }
 
-    const opposite = this.opposite(menu.position());
+    const opposite = this._opposite(menu.position());
     let oppositePosition = '0';
 
-    this.menus.forEach((item) => {
+    this._menus.forEach((item) => {
       if (item.position() === opposite && item.fixed) {
         oppositePosition = item.width();
       }
     });
 
-    this.inner
+    this._inner
       .transition()
       .style(menu.position(), '0')
       .style(opposite, oppositePosition)
       .on('end', callback);
+
+    return this;
   }
 
-  change(position) {
+  _change(position) {
     let found = false;
 
-    this.menus.forEach((menu) => {
+    this._menus.forEach((menu) => {
       if (menu.position() === position) {
         return;
       }
@@ -169,7 +213,7 @@ export default class Container {
       return;
     }
 
-    this.menus.forEach((menu) => {
+    this._menus.forEach((menu) => {
       if (found || menu.position() !== position) {
         return;
       }
@@ -178,7 +222,7 @@ export default class Container {
     });
   }
 
-  opposite(position) {
+  _opposite(position) {
     return position === 'left' ? 'right' : 'left';
   }
 }
