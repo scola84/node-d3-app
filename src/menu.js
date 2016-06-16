@@ -126,7 +126,7 @@ export default class Menu {
   }
 
   mode(mode) {
-    if (!mode) {
+    if (typeof mode === 'undefined') {
       return this._mode;
     }
 
@@ -137,7 +137,7 @@ export default class Menu {
   }
 
   position(position) {
-    if (!position) {
+    if (typeof position === 'undefined') {
       return this._position;
     }
 
@@ -159,8 +159,12 @@ export default class Menu {
       return this;
     }
 
-    this._slider = slider();
-    this._root.node().appendChild(this._slider.root().node());
+    this._slider = slider()
+      .remove(true)
+      .rotate(false);
+
+    this._root.node()
+      .appendChild(this._slider.root().node());
 
     return this;
   }

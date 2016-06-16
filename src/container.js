@@ -131,8 +131,12 @@ export default class Container {
       return this;
     }
 
-    this._slider = slider();
-    this._inner.node().appendChild(this._slider.root().node());
+    this._slider = slider()
+      .remove(true)
+      .rotate(false);
+
+    this._inner.node()
+      .appendChild(this._slider.root().node());
 
     return this;
   }
