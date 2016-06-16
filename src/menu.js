@@ -31,19 +31,29 @@ export default class Menu {
   }
 
   destroy() {
+    if (this._container) {
+      this._container.menu(this, false);
+      this._container = null;
+    }
+
     if (this._gesture) {
       this._gesture.destroy();
+      this._gesture = null;
     }
 
     if (this._media) {
       this._media.destroy();
+      this._media = null;
     }
 
-    if (this._container) {
-      this._container.remove(this);
-    } else {
-      this.root().remove();
+    if (this._slider) {
+      this._slider.destroy();
+      this._slider = null;
     }
+
+    this._root.dispatch('destroy');
+    this._root.remove();
+    this._root = null;
   }
 
   fixed() {
@@ -74,19 +84,20 @@ export default class Menu {
     return this;
   }
 
-  gesture(boolean) {
-    if (typeof boolean === 'undefined') {
+  gesture(action) {
+    if (typeof action === 'undefined') {
       return this._gesture;
     }
 
-    if (!boolean) {
+    if (action === false) {
       this._gesture.destroy();
       this._gesture = null;
 
       return this;
     }
 
-    this._gesture = this._root.gesture()
+    this._gesture = this._root
+      .gesture()
       .on('tap', (event) => {
         if (!this._fixed) {
           event.stopPropagation();
@@ -96,12 +107,12 @@ export default class Menu {
     return this;
   }
 
-  media(width, fixedAt) {
-    if (typeof width === 'undefined') {
+  media(width = '21.333em', fixedAt = '64em') {
+    if (width === null) {
       return this._media;
     }
 
-    if (!width) {
+    if (width === false) {
       this._media.destroy();
       this._media = null;
 
@@ -147,12 +158,12 @@ export default class Menu {
     return this;
   }
 
-  slider(boolean) {
-    if (typeof boolean === 'undefined') {
+  slider(action) {
+    if (typeof action === 'undefined') {
       return this._slider;
     }
 
-    if (!boolean) {
+    if (action === false) {
       this._slider.destroy();
       this._slider = null;
 

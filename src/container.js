@@ -38,13 +38,22 @@ export default class Container {
 
     if (this._gesture) {
       this._gesture.destroy();
+      this._gesture = null;
     }
 
     if (this._media) {
       this._media.destroy();
+      this._media = null;
     }
 
+    if (this._slider) {
+      this._slider.destroy();
+      this._slider = null;
+    }
+
+    this._root.dispatch('destroy');
     this._root.remove();
+    this._root = null;
   }
 
   height() {
@@ -63,12 +72,24 @@ export default class Container {
     return this._width;
   }
 
-  gesture(boolean) {
-    if (typeof boolean === 'undefined') {
+  append(menu, action = true) {
+    if (action === true) {
+      this._menus.add(menu);
+      this._root.node().appendChild(menu.reset().root().node());
+    } else if (action === false) {
+      this._menus.delete(menu);
+      menu.root().remove();
+    }
+
+    return this;
+  }
+
+  gesture(action) {
+    if (typeof action === 'undefined') {
       return this._gesture;
     }
 
-    if (!boolean) {
+    if (action === false) {
       this._gesture.destroy();
       this._gesture = null;
 
@@ -84,12 +105,12 @@ export default class Container {
     return this;
   }
 
-  media(width, height, styles = {}) {
-    if (typeof width === 'undefined') {
+  media(width = '64em', height = '48em', styles = {}) {
+    if (width === null) {
       return this._media;
     }
 
-    if (!width) {
+    if (width === false) {
       this._media.destroy();
       this._media = null;
 
@@ -119,12 +140,12 @@ export default class Container {
     return this;
   }
 
-  slider(boolean) {
-    if (typeof boolean === 'undefined') {
+  slider(action) {
+    if (typeof action === 'undefined') {
       return this._slider;
     }
 
-    if (!boolean) {
+    if (action === false) {
       this._slider.destroy();
       this._slider = null;
 
@@ -137,20 +158,6 @@ export default class Container {
 
     this._inner.node()
       .appendChild(this._slider.root().node());
-
-    return this;
-  }
-
-  append(menu) {
-    this._menus.add(menu);
-    this._root.node().appendChild(menu.reset().root().node());
-
-    return this;
-  }
-
-  remove(menu) {
-    this._menus.delete(menu);
-    menu.root().node().remove();
 
     return this;
   }
