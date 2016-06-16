@@ -17,6 +17,7 @@ export default class Menu {
 
     this._gesture = null;
     this._media = null;
+    this._slider = null;
 
     this._root = select('body')
       .append('div')
@@ -73,9 +74,16 @@ export default class Menu {
     return this;
   }
 
-  gesture() {
-    if (this._gesture) {
+  gesture(boolean) {
+    if (typeof boolean === 'undefined') {
       return this._gesture;
+    }
+
+    if (!boolean) {
+      this._gesture.destroy();
+      this._gesture = null;
+
+      return this;
     }
 
     this._gesture = this._root.gesture()
@@ -89,16 +97,19 @@ export default class Menu {
   }
 
   media(width, fixedAt) {
-    if (!width) {
+    if (typeof width === 'undefined') {
       return this._media;
+    }
+
+    if (!width) {
+      this._media.destroy();
+      this._media = null;
+
+      return this;
     }
 
     this._width = width;
     this._fixedAt = fixedAt;
-
-    if (this._media) {
-      this._media.destroy();
-    }
 
     this._root.style('width', width);
 
@@ -136,9 +147,16 @@ export default class Menu {
     return this;
   }
 
-  slider() {
-    if (this._slider) {
+  slider(boolean) {
+    if (typeof boolean === 'undefined') {
       return this._slider;
+    }
+
+    if (!boolean) {
+      this._slider.destroy();
+      this._slider = null;
+
+      return this;
     }
 
     this._slider = slider();

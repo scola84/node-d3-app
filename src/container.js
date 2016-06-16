@@ -11,6 +11,7 @@ export default class Container {
 
     this._gesture = null;
     this._media = null;
+    this._slider = null;
 
     this._root = select('body')
       .append('div')
@@ -62,9 +63,16 @@ export default class Container {
     return this._width;
   }
 
-  gesture() {
-    if (this._gesture) {
+  gesture(boolean) {
+    if (typeof boolean === 'undefined') {
       return this._gesture;
+    }
+
+    if (!boolean) {
+      this._gesture.destroy();
+      this._gesture = null;
+
+      return this;
     }
 
     this._gesture = this._root
@@ -77,17 +85,20 @@ export default class Container {
   }
 
   media(width, height, styles = {}) {
-    if (!width) {
+    if (typeof width === 'undefined') {
       return this._media;
+    }
+
+    if (!width) {
+      this._media.destroy();
+      this._media = null;
+
+      return this;
     }
 
     this._width = width;
     this._height = height;
     this._styles = styles;
-
-    if (this._media) {
-      this._media.destroy();
-    }
 
     this._media = this._root
       .media(`(min-height: ${height}) and (min-width: ${width})`)
@@ -108,9 +119,16 @@ export default class Container {
     return this;
   }
 
-  slider() {
-    if (this._slider) {
+  slider(boolean) {
+    if (typeof boolean === 'undefined') {
       return this._slider;
+    }
+
+    if (!boolean) {
+      this._slider.destroy();
+      this._slider = null;
+
+      return this;
     }
 
     this._slider = slider();
