@@ -5,7 +5,7 @@ export default {
   format: 'umd',
   globals: {
     'd3-selection': 'd3_selection',
-    '@scola/d3-slider': 'scola_d3_slider'
+    '@scola/d3-slider': 'd3_slider'
   },
   plugins: [
     babel({
