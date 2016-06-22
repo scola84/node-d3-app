@@ -1,4 +1,4 @@
-import { select } from 'd3-selection';
+import { event, select } from 'd3-selection';
 import { slider } from '@scola/d3-slider';
 
 export default class Container {
@@ -74,11 +74,9 @@ export default class Container {
 
   append(menu, action = true) {
     if (action === true) {
-      this._menus.add(menu);
-      this._root.node().appendChild(menu.reset().root().node());
+      this._appendMenu(menu);
     } else if (action === false) {
-      this._menus.delete(menu);
-      menu.root().remove();
+      this._removeMenu(menu);
     }
 
     return this;
@@ -162,7 +160,29 @@ export default class Container {
     return this;
   }
 
-  fixAll() {
+  _appendMenu(menu) {
+    this._menus.add(menu);
+    this._root.node().appendChild(menu.reset().root().node());
+
+    menu.root().on('fix.scola-app', this._fixMenu.bind(this));
+    menu.root().on('unfix.scola-app', this._fixMenu.bind(this));
+    menu.root().on('show.scola-app', this._showMenu.bind(this));
+    menu.root().on('hide.scola-app', this._hideMenu.bind(this));
+    menu.root().on('destroy.scola-app', this._destroyMenu.bind(this));
+  }
+
+  _removeMenu(menu) {
+    this._menus.delete(menu);
+    menu.root().remove();
+
+    menu.root().on('fix.scola-app', null);
+    menu.root().on('unfix.scola-app', null);
+    menu.root().on('show.scola-app', null);
+    menu.root().on('hide.scola-app', null);
+    menu.root().on('destroy.scola-app', null);
+  }
+
+  _fixMenu() {
     const style = {
       left: 0,
       right: 0
@@ -181,13 +201,13 @@ export default class Container {
     return this;
   }
 
-  show(menu, callback) {
-    if (menu.mode() === 'over') {
+  _showMenu() {
+    if (event.detail.menu.mode() === 'over') {
       return this;
     }
 
-    const opposite = this._opposite(menu.position());
-    let oppositePosition = '-' + menu.width();
+    const opposite = this._opposite(event.detail.menu.position());
+    let oppositePosition = '-' + event.detail.menu.width();
 
     this._menus.forEach((item) => {
       if (item.position() === opposite && item.fixed) {
@@ -197,19 +217,18 @@ export default class Container {
 
     this._inner
       .transition()
-      .style(menu.position(), menu.width())
-      .style(opposite, oppositePosition)
-      .on('end', callback);
+      .style(event.detail.menu.position(), event.detail.menu.width())
+      .style(opposite, oppositePosition);
 
     return this;
   }
 
-  hide(menu, callback) {
-    if (menu.mode() === 'over') {
+  _hideMenu() {
+    if (event.detail.menu.mode() === 'over') {
       return this;
     }
 
-    const opposite = this._opposite(menu.position());
+    const opposite = this._opposite(event.detail.menu.position());
     let oppositePosition = '0';
 
     this._menus.forEach((item) => {
@@ -220,11 +239,14 @@ export default class Container {
 
     this._inner
       .transition()
-      .style(menu.position(), '0')
-      .style(opposite, oppositePosition)
-      .on('end', callback);
+      .style(event.detail.menu.position(), '0')
+      .style(opposite, oppositePosition);
 
     return this;
+  }
+
+  _destroyMenu() {
+    this.append(event.detail.menu, false);
   }
 
   _change(position) {

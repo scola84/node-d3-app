@@ -4,9 +4,7 @@ import { select } from 'd3-selection';
 import { slider } from '@scola/d3-slider';
 
 export default class Menu {
-  constructor(container) {
-    this._container = container;
-
+  constructor() {
     this._width = null;
     this._fixedAt = null;
     this._position = null;
@@ -24,18 +22,12 @@ export default class Menu {
       .classed('scola menu', true)
       .styles({
         'border': '0 solid #CCC',
-        'display': 'none',
         'height': '100%',
         'position': 'absolute'
       });
   }
 
   destroy() {
-    if (this._container) {
-      this._container.menu(this, false);
-      this._container = null;
-    }
-
     if (this._gesture) {
       this._gesture.destroy();
       this._gesture = null;
@@ -182,30 +174,32 @@ export default class Menu {
 
   fix() {
     this._root
-      .style('display', 'block')
       .style(this._position, 0);
 
     this._fixed = true;
     this._visible = true;
 
-    if (this._container) {
-      this._container.fixAll();
-    }
+    this._root.dispatch('fix', {
+      detail: {
+        menu: this
+      }
+    });
 
     return this;
   }
 
   unfix() {
     this._root
-      .style('display', 'none')
       .style(this._position, this._mode === 'under' ? 0 : '-' + this._width);
 
     this._fixed = false;
     this._visible = false;
 
-    if (this._container) {
-      this._container.fixAll();
-    }
+    this._root.dispatch('unfix', {
+      detail: {
+        menu: this
+      }
+    });
 
     return this;
   }
@@ -215,17 +209,17 @@ export default class Menu {
       return false;
     }
 
-    this._root.style('display', 'block');
-
     if (this._mode !== 'under') {
       this._root.transition().style(this._position, '0');
     }
 
     this._visible = true;
 
-    if (this._container) {
-      this._container.show(this);
-    }
+    this._root.dispatch('show', {
+      detail: {
+        menu: this
+      }
+    });
 
     return true;
   }
@@ -241,9 +235,11 @@ export default class Menu {
 
     this._visible = false;
 
-    if (this._container) {
-      this._container.hide(this, () => this._root.style('display', 'none'));
-    }
+    this._root.dispatch('hide', {
+      detail: {
+        menu: this
+      }
+    });
 
     return true;
   }

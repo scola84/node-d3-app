@@ -3,14 +3,14 @@ import Menu from './src/menu';
 
 let instance = null;
 
-export function container(options) {
+export function container() {
   if (!instance) {
-    instance = new Container(options);
+    instance = new Container();
   }
 
   return instance;
 }
 
-export function menu(options) {
-  return new Menu(container(), options);
+export function menu() {
+  return new Menu();
 }
