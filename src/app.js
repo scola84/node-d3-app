@@ -1,7 +1,7 @@
 import { event, select } from 'd3-selection';
 import { slider } from '@scola/d3-slider';
 
-export default class Container {
+export default class App {
   constructor() {
     this._menus = new Set();
 

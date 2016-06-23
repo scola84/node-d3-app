@@ -1,16 +1,5 @@
-import Container from './src/container';
-import Menu from './src/menu';
+import App from './src/app';
 
-let instance = null;
-
-export function container() {
-  if (!instance) {
-    instance = new Container();
-  }
-
-  return instance;
-}
-
-export function menu() {
-  return new Menu();
+export function app() {
+  return new App();
 }
