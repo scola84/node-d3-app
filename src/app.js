@@ -162,13 +162,13 @@ export default class App {
 
   _appendMenu(menu) {
     this._menus.add(menu);
-    this._root.node().appendChild(menu.reset().root().node());
+    this._root.node().appendChild(menu.root().node());
+    this._fixMenu();
 
     menu.root().on('fix.scola-app', this._fixMenu.bind(this));
     menu.root().on('unfix.scola-app', this._fixMenu.bind(this));
     menu.root().on('show.scola-app', this._showMenu.bind(this));
     menu.root().on('hide.scola-app', this._hideMenu.bind(this));
-    menu.root().on('destroy.scola-app', this._destroyMenu.bind(this));
   }
 
   _removeMenu(menu) {
@@ -179,7 +179,6 @@ export default class App {
     menu.root().on('unfix.scola-app', null);
     menu.root().on('show.scola-app', null);
     menu.root().on('hide.scola-app', null);
-    menu.root().on('destroy.scola-app', null);
   }
 
   _fixMenu() {
@@ -243,10 +242,6 @@ export default class App {
       .style(opposite, oppositePosition);
 
     return this;
-  }
-
-  _destroyMenu() {
-    this.append(event.detail.menu, false);
   }
 
   _change(position) {
