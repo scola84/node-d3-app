@@ -162,15 +162,15 @@ export default class App {
 
   _appendMenu(menu) {
     this._root.node().appendChild(menu.root().node());
-    this._fixMenu();
-    this._bindMenu(menu);
     this._menus.add(menu);
+    this._bindMenu(menu);
+    this._fixMenu();
   }
 
   _removeMenu(menu) {
     menu.root().remove();
-    this._unbindMenu(menu);
     this._menus.delete(menu);
+    this._unbindMenu(menu);
   }
 
   _bindMenu(menu) {
