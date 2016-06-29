@@ -161,20 +161,26 @@ export default class App {
   }
 
   _appendMenu(menu) {
-    this._menus.add(menu);
     this._root.node().appendChild(menu.root().node());
     this._fixMenu();
+    this._bindMenu(menu);
+    this._menus.add(menu);
+  }
 
+  _removeMenu(menu) {
+    menu.root().remove();
+    this._unbindMenu(menu);
+    this._menus.delete(menu);
+  }
+
+  _bindMenu(menu) {
     menu.root().on('fix.scola-app', this._fixMenu.bind(this));
     menu.root().on('unfix.scola-app', this._fixMenu.bind(this));
     menu.root().on('show.scola-app', this._showMenu.bind(this));
     menu.root().on('hide.scola-app', this._hideMenu.bind(this));
   }
 
-  _removeMenu(menu) {
-    this._menus.delete(menu);
-    menu.root().remove();
-
+  _unbindMenu(menu) {
     menu.root().on('fix.scola-app', null);
     menu.root().on('unfix.scola-app', null);
     menu.root().on('show.scola-app', null);
