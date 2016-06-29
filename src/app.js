@@ -214,8 +214,8 @@ export default class App {
     const opposite = this._opposite(event.detail.menu.position());
     let oppositePosition = '-' + event.detail.menu.width();
 
-    this._menus.forEach((item) => {
-      if (item.position() === opposite && item.fixed) {
+    this._menus.forEach((menu) => {
+      if (menu.position() === opposite && menu.fixed()) {
         oppositePosition = '0';
       }
     });
@@ -236,9 +236,9 @@ export default class App {
     const opposite = this._opposite(event.detail.menu.position());
     let oppositePosition = '0';
 
-    this._menus.forEach((item) => {
-      if (item.position() === opposite && item.fixed) {
-        oppositePosition = item.width();
+    this._menus.forEach((menu) => {
+      if (menu.position() === opposite && menu.fixed()) {
+        oppositePosition = menu.width();
       }
     });
 
