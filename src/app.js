@@ -32,9 +32,8 @@ export default class App {
   }
 
   destroy() {
-    this._menus.forEach((menu) => {
-      menu.destroy();
-    });
+    this._menus.forEach((menu) => menu.destroy());
+    this._menus.clear();
 
     if (this._gesture) {
       this._gesture.destroy();
