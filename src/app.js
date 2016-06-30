@@ -15,7 +15,6 @@ export default class App {
 
     this._root = select('body')
       .append('div')
-      .remove()
       .classed('scola app', true)
       .styles({
         'position': 'relative',
