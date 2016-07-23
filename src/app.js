@@ -71,7 +71,7 @@ export default class App {
     return this._width;
   }
 
-  append(menu, action = true) {
+  append(menu, action) {
     if (action === true) {
       this._appendMenu(menu);
     } else if (action === false) {
