@@ -1,4 +1,4 @@
-import babel from 'rollup-plugin-babel';
+import buble from 'rollup-plugin-buble';
 
 export default {
   entry: 'index.js',
@@ -8,8 +8,6 @@ export default {
     '@scola/d3-slider': 'd3'
   },
   plugins: [
-    babel({
-      presets: ['es2015-rollup']
-    })
+    buble()
   ]
 };
