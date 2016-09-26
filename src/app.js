@@ -27,9 +27,9 @@ export default class App {
       .classed('scola inner', true)
       .styles({
         'height': '100%',
-        'left': 0,
+        'left': '0px',
         'position': 'absolute',
-        'right': 0
+        'right': '0px'
       });
   }
 
@@ -190,8 +190,8 @@ export default class App {
 
   _fixMenu() {
     const style = {
-      left: 0,
-      right: 0
+      left: '0px',
+      right: '0px'
     };
 
     this._menus.forEach((menu) => {
@@ -217,7 +217,7 @@ export default class App {
 
     this._menus.forEach((menu) => {
       if (menu.position() === opposite && menu.fixed()) {
-        oppositePosition = '0';
+        oppositePosition = '0px';
       }
     });
 
@@ -235,7 +235,7 @@ export default class App {
     }
 
     const opposite = this._opposite(event.detail.menu.position());
-    let oppositePosition = '0';
+    let oppositePosition = '0px';
 
     this._menus.forEach((menu) => {
       if (menu.position() === opposite && menu.fixed()) {
@@ -245,7 +245,7 @@ export default class App {
 
     this._inner
       .transition()
-      .style(event.detail.menu.position(), '0')
+      .style(event.detail.menu.position(), '0px')
       .style(opposite, oppositePosition);
 
     return this;
