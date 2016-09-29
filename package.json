@@ -8,18 +8,24 @@
   "main": "./dist/d3-app.js",
   "jsnext:main": "index.js",
   "dependencies": {
-    "@scola/d3-gesture": "^1.0.0",
-    "@scola/d3-media": "^1.0.0",
-    "@scola/d3-slider": "^1.0.0",
-    "d3-selection": "^1.0.2"
+    "@scola/d3-gesture": "^1.0.1",
+    "@scola/d3-media": "^1.0.1",
+    "@scola/d3-slider": "^1.0.1",
+    "d3-selection": "^1.0.2",
+    "d3-selection-multi": "^1.0.0",
+    "d3-transition": "^1.0.2"
   },
   "devDependencies": {
-    "rollup": "^0.35.9",
-    "rollup-plugin-buble": "^0.13.0",
+    "rollup": "^0.36.1",
+    "rollup-plugin-buble": "^0.14.0",
     "uglify-js": "^2.7.3"
   },
   "scripts": {
-    "build": "rollup -c -n d3 -o dist/d3-app.js",
-    "build:min": "uglifyjs dist/d3-app.js -c -m -o dist/d3-app.min.js"
+    "build": "npm run cleanup && npm run rollup",
+    "build:min": "npm run build && npm run min",
+    "cleanup": "rm -rf dist",
+    "min": "npm run min:js && gzip -9 -k dist/*",
+    "min:js": "uglifyjs dist/d3-app.js -m -o dist/d3-app.min.js",
+    "rollup": "rollup -c -n d3 -o dist/d3-app.js"
   }
 }
