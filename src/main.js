@@ -5,17 +5,16 @@ import 'd3-transition';
 import '@scola/d3-gesture';
 import '@scola/d3-media';
 
-export default class App {
+export default class Main {
   constructor() {
-    this._menus = new Set();
-
-    this._width = null;
     this._height = null;
     this._styles = null;
+    this._width = null;
 
     this._gesture = null;
     this._media = null;
     this._slider = null;
+    this._menus = new Set();
 
     this._root = select('body')
       .append('div')
@@ -37,38 +36,27 @@ export default class App {
   }
 
   destroy() {
+    this._deleteGesture();
+    this._deleteMedia();
+    this._deleteSlider();
+
     this._menus.forEach((menu) => {
       menu.destroy();
     });
 
     this._menus.clear();
 
-    if (this._gesture) {
-      this._gesture.destroy();
-      this._gesture = null;
-    }
-
-    if (this._media) {
-      this._media.destroy();
-      this._media = null;
-    }
-
-    if (this._slider) {
-      this._slider.destroy();
-      this._slider = null;
-    }
-
     this._root.dispatch('destroy');
     this._root.remove();
     this._root = null;
   }
 
-  height() {
-    return this._height;
-  }
-
   root() {
     return this._root;
+  }
+
+  height() {
+    return this._height;
   }
 
   styles() {
@@ -79,33 +67,18 @@ export default class App {
     return this._width;
   }
 
-  append(menu, action) {
-    if (action === true) {
-      this._appendMenu(menu);
-    } else if (action === false) {
-      this._removeMenu(menu);
-    }
-
-    return this;
-  }
-
-  gesture(action) {
-    if (typeof action === 'undefined') {
+  gesture(action = null) {
+    if (action === null) {
       return this._gesture;
     }
 
     if (action === false) {
-      this._gesture.destroy();
-      this._gesture = null;
-
-      return this;
+      return this._deleteGesture();
     }
 
-    this._gesture = this._root
-      .gesture()
-      .on('tap', () => this._change())
-      .on('swiperight', () => this._change('left'))
-      .on('swipeleft', () => this._change('right'));
+    if (!this._gesture) {
+      this._insertGesture();
+    }
 
     return this;
   }
@@ -116,12 +89,58 @@ export default class App {
     }
 
     if (width === false) {
-      this._media.destroy();
-      this._media = null;
-
-      return this;
+      return this._deleteMedia();
     }
 
+    if (!this._media) {
+      this._insertMedia(width, height, styles);
+    }
+
+    return this;
+  }
+
+  slider(action = true) {
+    if (action === false) {
+      return this._deleteSlider();
+    }
+
+    if (!this._slider) {
+      this._insertSlider();
+    }
+
+    return this._slider;
+  }
+
+  append(menu, action = true) {
+    if (action === true) {
+      this._appendMenu(menu);
+    } else if (action === false) {
+      this._removeMenu(menu);
+    }
+
+    return this;
+  }
+
+  _insertGesture() {
+    this._gesture = this._root
+      .gesture()
+      .on('tap', () => this._change())
+      .on('swiperight', () => this._change('left'))
+      .on('swipeleft', () => this._change('right'));
+
+    return this;
+  }
+
+  _deleteGesture() {
+    if (this._gesture) {
+      this._gesture.destroy();
+      this._gesture = null;
+    }
+
+    return this;
+  }
+
+  _insertMedia(width, height, styles) {
     this._width = width;
     this._height = height;
     this._styles = styles;
@@ -145,24 +164,31 @@ export default class App {
     return this;
   }
 
-  slider(action) {
-    if (typeof action === 'undefined') {
-      return this._slider;
+  _deleteMedia() {
+    if (this._media) {
+      this._media.destroy();
+      this._media = null;
     }
 
-    if (action === false) {
-      this._slider.destroy();
-      this._slider = null;
+    return this;
+  }
 
-      return this;
-    }
-
+  _insertSlider() {
     this._slider = slider()
       .remove(true)
       .rotate(false);
 
     this._inner.node()
       .appendChild(this._slider.root().node());
+
+    return this;
+  }
+
+  _deleteSlider() {
+    if (this._slider) {
+      this._slider.destroy();
+      this._slider = null;
+    }
 
     return this;
   }

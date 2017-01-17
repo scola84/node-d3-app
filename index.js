@@ -1,5 +1,10 @@
-import App from './src/app';
+import Main from './src/main';
+import Menu from './src/menu';
 
-export function app() {
-  return new App();
+export function main() {
+  return new Main();
+}
+
+export function menu() {
+  return new Menu();
 }
