@@ -83,13 +83,21 @@ export default class Main {
     return this;
   }
 
-  media(width = '64em', height = '48em', styles = {}) {
+  media(width = '64em', height = '48em', styles = null) {
     if (width === null) {
       return this._media;
     }
 
     if (width === false) {
       return this._deleteMedia();
+    }
+
+    if (styles === null) {
+      styles = {
+        'border-radius': '1em',
+        'overflow': 'hidden',
+        'transform': 'scale(1)'
+      };
     }
 
     if (!this._media) {
@@ -117,6 +125,26 @@ export default class Main {
     } else if (action === false) {
       this._removeMenu(menu);
     }
+
+    return this;
+  }
+
+  attach() {
+    this._root.style('opacity', 0);
+    document.body.appendChild(this._root.node());
+
+    this._root
+      .transition()
+      .style('opacity', 1);
+
+    return this;
+  }
+
+  detach() {
+    this._root
+      .transition()
+      .style('opacity', 0)
+      .remove();
 
     return this;
   }
