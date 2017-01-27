@@ -25,8 +25,8 @@ export default class Main {
         'z-index': 0
       });
 
-    this._inner = this._root.append('div')
-      .classed('scola inner', true)
+    this._main = this._root.append('div')
+      .classed('scola main', true)
       .styles({
         'height': '100%',
         'left': '0px',
@@ -206,7 +206,7 @@ export default class Main {
       .remove(true)
       .rotate(false);
 
-    this._inner.node()
+    this._main.node()
       .appendChild(this._slider.root().node());
 
     return this;
@@ -222,7 +222,14 @@ export default class Main {
   }
 
   _appendMenu(menu) {
-    this._root.node().appendChild(menu.root().node());
+    if (menu.position() === 'left') {
+      this._root.node()
+        .insertBefore(menu.root().node(), this._main.node());
+    } else {
+      this._root.node()
+        .appendChild(menu.root().node());
+    }
+
     this._menus.add(menu);
     this._bindMenu(menu);
     this._fixMenu();
@@ -262,7 +269,7 @@ export default class Main {
       }
     });
 
-    this._inner.styles(style);
+    this._main.styles(style);
 
     return this;
   }
@@ -281,7 +288,7 @@ export default class Main {
       }
     });
 
-    this._inner
+    this._main
       .transition()
       .style(event.detail.menu.position(), event.detail.menu.width())
       .style(opposite, oppositePosition);
@@ -303,7 +310,7 @@ export default class Main {
       }
     });
 
-    this._inner
+    this._main
       .transition()
       .style(event.detail.menu.position(), '0px')
       .style(opposite, oppositePosition);
