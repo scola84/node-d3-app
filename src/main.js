@@ -7,6 +7,7 @@ import '@scola/d3-media';
 
 export default class Main {
   constructor() {
+    this._fade = true;
     this._height = null;
     this._styles = null;
     this._width = null;
@@ -40,10 +41,6 @@ export default class Main {
     this._deleteMedia();
     this._deleteSlider();
 
-    this._menus.forEach((menu) => {
-      menu.destroy();
-    });
-
     this._menus.clear();
 
     this._root.dispatch('destroy');
@@ -65,6 +62,15 @@ export default class Main {
 
   width() {
     return this._width;
+  }
+
+  fade(value = null) {
+    if (value === null) {
+      return this._fade;
+    }
+
+    this._fade = value;
+    return this;
   }
 
   gesture(action = null) {
@@ -129,24 +135,29 @@ export default class Main {
     return this;
   }
 
-  attach() {
-    this._root.style('opacity', 0);
-    document.body.appendChild(this._root.node());
+  hide(callback = () => {}) {
+    if (!this._fade) {
+      callback();
+      return;
+    }
 
-    this._root
-      .transition()
-      .style('opacity', 1);
-
-    return this;
-  }
-
-  detach() {
     this._root
       .transition()
       .style('opacity', 0)
-      .remove();
+      .on('end', callback);
+  }
 
-    return this;
+  show(callback = () => {}) {
+    if (!this._fade) {
+      callback();
+      return;
+    }
+
+    this._root
+      .style('opacity', 0)
+      .transition()
+      .style('opacity', 1)
+      .on('end', callback);
   }
 
   _insertGesture() {
