@@ -126,13 +126,11 @@ export default class Main {
   }
 
   append(menu, action = true) {
-    if (action === true) {
-      this._appendMenu(menu);
-    } else if (action === false) {
-      this._removeMenu(menu);
+    if (action === false) {
+      return this._deleteMenu(menu);
     }
 
-    return this;
+    return this._insertMenu(menu);
   }
 
   hide(callback = () => {}) {
@@ -232,7 +230,7 @@ export default class Main {
     return this;
   }
 
-  _appendMenu(menu) {
+  _insertMenu(menu) {
     if (menu.position() === 'left') {
       this._root.node()
         .insertBefore(menu.root().node(), this._main.node());
@@ -244,12 +242,16 @@ export default class Main {
     this._menus.add(menu);
     this._bindMenu(menu);
     this._fixMenu();
+
+    return menu;
   }
 
-  _removeMenu(menu) {
+  _deleteMenu(menu) {
     menu.root().remove();
     this._menus.delete(menu);
     this._unbindMenu(menu);
+
+    return menu;
   }
 
   _bindMenu(menu) {
