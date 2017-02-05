@@ -172,11 +172,15 @@ export default class Main {
     let menuRight = null;
 
     this._menus.forEach((menu) => {
-      if (!menuLeft && menu.position() === 'left' && menu.fixed() === false) {
+      if (!menuLeft && menu.position() === 'left' &&
+        menu.fixed() === false) {
+
         menuLeft = menu;
       }
 
-      if (!menuRight && menu.position() === 'right' && menu.fixed() === false) {
+      if (!menuRight && menu.position() === 'right' &&
+        menu.fixed() === false) {
+
         menuRight = menu;
       }
     });
@@ -188,8 +192,10 @@ export default class Main {
       };
 
       this._moveWidth = {
-        left: menuLeft ? parseFloat(menuLeft.root().style('width')) : 0,
-        right: menuRight ? parseFloat(menuRight.root().style('width')) : 0
+        left: menuLeft ?
+          parseFloat(menuLeft.root().style('width')) : 0,
+        right: menuRight ?
+          parseFloat(menuRight.root().style('width')) : 0
       };
     }
 
@@ -269,6 +275,16 @@ export default class Main {
     }
   }
 
+  _bindMenu(menu) {
+    menu.root().on('fix.scola-app', () => this._fixMenu());
+    menu.root().on('unfix.scola-app', () => this._fixMenu());
+  }
+
+  _unbindMenu(menu) {
+    menu.root().on('fix.scola-app', null);
+    menu.root().on('unfix.scola-app', null);
+  }
+
   _insertMedia(width, height, styles) {
     this._width = width;
     this._height = height;
@@ -334,12 +350,14 @@ export default class Main {
     }
 
     this._menus.add(menu);
+    this._bindMenu(menu);
     this._fixMenu();
 
     return menu;
   }
 
   _deleteMenu(menu) {
+    this._unbindMenu(menu);
     menu.root().remove();
     this._menus.delete(menu);
 
@@ -429,8 +447,10 @@ export default class Main {
 
     if (!this._moveWidth) {
       this._moveWidth = {
-        left: menuLeft ? parseFloat(menuLeft.root().style('width')) : 0,
-        right: menuRight ? parseFloat(menuRight.root().style('width')) : 0
+        left: menuLeft ?
+          parseFloat(menuLeft.root().style('width')) : 0,
+        right: menuRight ?
+          parseFloat(menuRight.root().style('width')) : 0
       };
     }
 

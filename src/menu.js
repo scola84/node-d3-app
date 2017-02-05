@@ -15,7 +15,6 @@ export default class Menu {
     this._width = null;
     this._fixedAt = null;
 
-
     this._fixed = false;
     this._visible = false;
 
@@ -141,6 +140,7 @@ export default class Menu {
     this._fixed = true;
     this._visible = true;
 
+    this._root.dispatch('fix');
     return this;
   }
 
@@ -151,6 +151,7 @@ export default class Menu {
     this._fixed = false;
     this._visible = false;
 
+    this._root.dispatch('unfix');
     return this;
   }
 
