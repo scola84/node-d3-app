@@ -1,4 +1,4 @@
-import { event, select } from 'd3-selection';
+import { select } from 'd3-selection';
 import { slider } from '@scola/d3-slider';
 import 'd3-selection-multi';
 import 'd3-transition';
@@ -8,6 +8,8 @@ import '@scola/d3-media';
 export default class Main {
   constructor() {
     this._fade = true;
+    this._mode = 'over';
+
     this._height = null;
     this._styles = null;
     this._width = null;
@@ -16,6 +18,10 @@ export default class Main {
     this._media = null;
     this._slider = null;
     this._menus = new Set();
+
+    this._panning = false;
+    this._moveStart = null;
+    this._moveWidth = null;
 
     this._root = select('body')
       .append('div')
@@ -26,7 +32,8 @@ export default class Main {
         'z-index': 0
       });
 
-    this._main = this._root.append('div')
+    this._main = this._root
+      .append('div')
       .classed('scola main', true)
       .styles({
         'height': '100%',
@@ -34,10 +41,12 @@ export default class Main {
         'position': 'absolute',
         'right': '0px'
       });
+
+    this._bindRoot();
   }
 
   destroy() {
-    this._deleteGesture();
+    this._unbindRoot();
     this._deleteMedia();
     this._deleteSlider();
 
@@ -73,19 +82,12 @@ export default class Main {
     return this;
   }
 
-  gesture(action = null) {
-    if (action === null) {
-      return this._gesture;
+  mode(value = null) {
+    if (value === null) {
+      return this._mode;
     }
 
-    if (action === false) {
-      return this._deleteGesture();
-    }
-
-    if (!this._gesture) {
-      this._insertGesture();
-    }
-
+    this._mode = value;
     return this;
   }
 
@@ -158,23 +160,113 @@ export default class Main {
       .on('end', callback);
   }
 
-  _insertGesture() {
-    this._gesture = this._root
-      .gesture()
-      .on('tap', () => this._change())
-      .on('swiperight', () => this._change('left'))
-      .on('swipeleft', () => this._change('right'));
+  move(delta = null, end = false) {
+    if (delta === null) {
+      this._moveStart = null;
+      this._moveWidth = null;
 
-    return this;
+      return;
+    }
+
+    let menuLeft = null;
+    let menuRight = null;
+
+    this._menus.forEach((menu) => {
+      if (!menuLeft && menu.position() === 'left' && menu.fixed() === false) {
+        menuLeft = menu;
+      }
+
+      if (!menuRight && menu.position() === 'right' && menu.fixed() === false) {
+        menuRight = menu;
+      }
+    });
+
+    if (this._moveStart === null) {
+      this._moveStart = {
+        left: parseFloat(this._main.style('left')),
+        right: parseFloat(this._main.style('right'))
+      };
+
+      this._moveWidth = {
+        left: menuLeft ? parseFloat(menuLeft.root().style('width')) : 0,
+        right: menuRight ? parseFloat(menuRight.root().style('width')) : 0
+      };
+    }
+
+    let left = this._moveStart.left + delta;
+    let right = this._moveStart.right - delta;
+
+    if (delta > 0) {
+      if (left > 0) {
+        if (!menuLeft) {
+          left = 0;
+          right = 0;
+        } else if (left > this._moveWidth.left) {
+          left = this._moveWidth.left;
+          right = -left;
+        }
+      }
+
+      if (end === true) {
+        if (left > this._moveWidth.left / 2) {
+          this._transit('left');
+        } else if (right > this._moveWidth.right / 2) {
+          this._transit('right');
+        } else {
+          this._transit();
+        }
+
+        this.move();
+      }
+    } else if (delta < 0) {
+      if (right > 0) {
+        if (!menuRight) {
+          left = 0;
+          right = 0;
+        } else if (right > this._moveWidth.right) {
+          right = this._moveWidth.right;
+          left = -right;
+        }
+      }
+
+      if (end === true) {
+        if (right > this._moveWidth.right / 2) {
+          this._transit('right');
+        } else if (left > this._moveWidth.left / 2) {
+          this._transit('left');
+        } else {
+          this._transit();
+        }
+
+        this.move();
+      }
+    }
+
+    if (end === false) {
+      this._main.styles({
+        left: left + 'px',
+        right: right + 'px'
+      });
+    }
   }
 
-  _deleteGesture() {
+  _bindRoot() {
+    this._gesture = this._root
+      .gesture()
+      .on('panstart', (e) => this._pan(e))
+      .on('panright', (e) => this._pan(e))
+      .on('panleft', (e) => this._pan(e))
+      .on('panend', (e) => this._pan(e))
+      .on('swiperight', (e) => this._swipe(e))
+      .on('swipeleft', (e) => this._swipe(e))
+      .on('tap', (e) => this._swipe(e));
+  }
+
+  _unbindRoot() {
     if (this._gesture) {
       this._gesture.destroy();
       this._gesture = null;
     }
-
-    return this;
   }
 
   _insertMedia(width, height, styles) {
@@ -231,6 +323,8 @@ export default class Main {
   }
 
   _insertMenu(menu) {
+    menu.mode(this._mode);
+
     if (menu.position() === 'left') {
       this._root.node()
         .insertBefore(menu.root().node(), this._main.node());
@@ -240,7 +334,6 @@ export default class Main {
     }
 
     this._menus.add(menu);
-    this._bindMenu(menu);
     this._fixMenu();
 
     return menu;
@@ -249,23 +342,8 @@ export default class Main {
   _deleteMenu(menu) {
     menu.root().remove();
     this._menus.delete(menu);
-    this._unbindMenu(menu);
 
     return menu;
-  }
-
-  _bindMenu(menu) {
-    menu.root().on('fix.scola-app', () => this._fixMenu());
-    menu.root().on('unfix.scola-app', () => this._fixMenu());
-    menu.root().on('show.scola-app', () => this._showMenu());
-    menu.root().on('hide.scola-app', () => this._hideMenu());
-  }
-
-  _unbindMenu(menu) {
-    menu.root().on('fix.scola-app', null);
-    menu.root().on('unfix.scola-app', null);
-    menu.root().on('show.scola-app', null);
-    menu.root().on('hide.scola-app', null);
   }
 
   _fixMenu() {
@@ -283,79 +361,130 @@ export default class Main {
     });
 
     this._main.styles(style);
-
     return this;
   }
 
-  _showMenu() {
-    if (event.detail.menu.mode() === 'over') {
-      return this;
+  _pan(panEvent) {
+    if (panEvent.type === 'panstart') {
+      this._panning = true;
     }
 
-    const opposite = this._opposite(event.detail.menu.position());
-    let oppositePosition = '-' + event.detail.menu.width();
+    this._panMenu(panEvent);
+
+    if (this._mode !== 'over') {
+      this._panMain(panEvent);
+    }
+  }
+
+  _panMenu(panEvent) {
+    let found = null;
 
     this._menus.forEach((menu) => {
-      if (menu.position() === opposite && menu.fixed()) {
-        oppositePosition = '0px';
+      if (menu.visible()) {
+        found = menu;
+        return;
       }
     });
 
-    this._main
-      .transition()
-      .style(event.detail.menu.position(), event.detail.menu.width())
-      .style(opposite, oppositePosition);
+    const menus = found ? [found] : this._menus;
 
-    return this;
+    menus.forEach((menu) => {
+      if (this._panning === false) {
+        menu.move();
+      } else {
+        menu.move(panEvent.deltaX,
+          panEvent.type === 'panend');
+      }
+    });
   }
 
-  _hideMenu() {
-    if (event.detail.menu.mode() === 'over') {
-      return this;
+  _panMain(panEvent) {
+    if (this._panning === false) {
+      this.move();
+    } else {
+      this.move(panEvent.deltaX,
+        panEvent.type === 'panend');
     }
+  }
 
-    const opposite = this._opposite(event.detail.menu.position());
-    let oppositePosition = '0px';
+  _swipe(swipeEvent) {
+    this._panning = false;
+
+    let menuLeft = null;
+    let menuRight = null;
 
     this._menus.forEach((menu) => {
-      if (menu.position() === opposite && menu.fixed()) {
-        oppositePosition = menu.width();
+      if (!menuLeft && menu.position() === 'left' &&
+        menu.fixed() === false) {
+
+        menuLeft = menu;
+      }
+
+      if (!menuRight && menu.position() === 'right' &&
+        menu.fixed() === false) {
+
+        menuRight = menu;
       }
     });
 
-    this._main
-      .transition()
-      .style(event.detail.menu.position(), '0px')
-      .style(opposite, oppositePosition);
+    if (!this._moveWidth) {
+      this._moveWidth = {
+        left: menuLeft ? parseFloat(menuLeft.root().style('width')) : 0,
+        right: menuRight ? parseFloat(menuRight.root().style('width')) : 0
+      };
+    }
 
-    return this;
-  }
-
-  _change(position) {
-    let found = false;
-
-    this._menus.forEach((menu) => {
-      if (menu.position() === position) {
+    if (swipeEvent.deltaX > 0) {
+      if (menuRight && menuRight.visible()) {
+        menuRight.hide();
+        this._transit();
+      } else if (menuLeft) {
+        menuLeft.show();
+        this._transit('left');
+      }
+    } else if (swipeEvent.deltaX < 0) {
+      if (menuLeft && menuLeft.visible()) {
+        menuLeft.hide();
+        this._transit();
+      } else if (menuRight) {
+        menuRight.show();
+        this._transit('right');
+      }
+    } else {
+      if (this._mode !== 'over') {
         return;
       }
 
-      found = found || menu.hide();
-    });
+      if (menuLeft && menuLeft.visible()) {
+        menuLeft.hide();
+      } else if (menuRight && menuRight.visible()) {
+        menuRight.hide();
+      }
+    }
+  }
 
-    if (found) {
+  _transit(position = null) {
+    if (this._mode === 'over') {
       return;
     }
 
-    this._menus.forEach((menu) => {
-      if (found || menu.position() !== position) {
-        return;
-      }
+    const styles = {
+      left: '0px',
+      right: '0px'
+    };
 
-      found = menu.show();
-    });
-  }
+    if (position === 'left') {
+      styles.left = this._moveWidth.left + 'px';
+      styles.right = -this._moveWidth.left + 'px';
+    }
 
-  _opposite(position) {
-    return position === 'left' ? 'right' : 'left';
+    if (position === 'right') {
+      styles.left = -this._moveWidth.right + 'px';
+      styles.right = this._moveWidth.right + 'px';
+    }
+
+    this._main
+      .transition()
+      .styles(styles);
   }
 }

@@ -9,13 +9,18 @@ import '@scola/d3-media';
 
 export default class Menu {
   constructor() {
+    this._mode = null;
+    this._position = null;
+
     this._width = null;
     this._fixedAt = null;
-    this._position = null;
-    this._mode = null;
+
 
     this._fixed = false;
     this._visible = false;
+
+    this._moveStart = null;
+    this._moveWidth = null;
 
     this._gesture = null;
     this._media = null;
@@ -31,10 +36,12 @@ export default class Menu {
         'max-width': '85%',
         'position': 'absolute'
       });
+
+    this._bindRoot();
   }
 
   destroy() {
-    this._deleteGesture();
+    this._unbindRoot();
     this._deleteMedia();
     this._deleteSlider();
 
@@ -63,26 +70,38 @@ export default class Menu {
     return this._width;
   }
 
-  border() {
-    this._root
-      .style('border-' + this._position + '-style', 'none')
-      .style('border-' + this._opposite(this._position) + '-style', 'solid');
+  mode(value = null) {
+    if (value === null) {
+      return this._mode;
+    }
+
+    this._root.style('z-index', value === 'under' ? -1 : 1);
+    this._mode = value;
+
+    this.reset();
+    return this;
+  }
+
+  position(value = null) {
+    if (value === null) {
+      return this._position;
+    }
+
+    this._root.style(this._position, null);
+    this._position = value;
+
+    this.border();
+    this.reset();
 
     return this;
   }
 
-  gesture(action = null) {
-    if (action === null) {
-      return this._gesture;
-    }
+  border() {
+    const opposite = this._position === 'left' ? 'right' : 'left';
 
-    if (action === false) {
-      return this._deleteGesture();
-    }
-
-    if (!this._gesture) {
-      this._insertGesture();
-    }
+    this._root
+      .style('border-' + this._position + '-style', 'none')
+      .style('border-' + opposite + '-style', 'solid');
 
     return this;
   }
@@ -103,26 +122,16 @@ export default class Menu {
     return this;
   }
 
-  mode(value = null) {
-    if (value === null) {
-      return this._mode;
+  slider(action = true) {
+    if (action === false) {
+      return this._deleteSlider();
     }
 
-    this._root.style('z-index', value === 'under' ? -1 : 1);
-    this._mode = value;
-
-    return this;
-  }
-
-  position(value = null) {
-    if (value === null) {
-      return this._position;
+    if (!this._slider) {
+      this._insertSlider();
     }
 
-    this._root.style(this._position, null);
-    this._position = value;
-
-    return this;
+    return this._slider;
   }
 
   fix() {
@@ -131,12 +140,6 @@ export default class Menu {
 
     this._fixed = true;
     this._visible = true;
-
-    this._root.dispatch('fix', {
-      detail: {
-        menu: this
-      }
-    });
 
     return this;
   }
@@ -148,12 +151,6 @@ export default class Menu {
     this._fixed = false;
     this._visible = false;
 
-    this._root.dispatch('unfix', {
-      detail: {
-        menu: this
-      }
-    });
-
     return this;
   }
 
@@ -163,17 +160,12 @@ export default class Menu {
     }
 
     if (this._mode !== 'under') {
-      this._root.transition().style(this._position, '0px');
+      this._root
+        .transition()
+        .style(this._position, '0px');
     }
 
     this._visible = true;
-
-    this._root.dispatch('show', {
-      detail: {
-        menu: this
-      }
-    });
-
     return true;
   }
 
@@ -183,16 +175,59 @@ export default class Menu {
     }
 
     if (this._mode !== 'under') {
-      this._root.transition().style(this._position, '-' + this._width);
+      const width = parseFloat(this._root.style('width'));
+
+      this._root
+        .transition()
+        .style(this._position, '-' + width + 'px');
     }
 
     this._visible = false;
+    return true;
+  }
 
-    this._root.dispatch('hide', {
-      detail: {
-        menu: this
+  move(delta = null, end = false) {
+    if (delta === null) {
+      this._moveStart = null;
+      this._moveWidth = null;
+
+      return false;
+    }
+
+    if (this._fixed || this._mode === 'under') {
+      return false;
+    }
+
+    if (this._position === 'right') {
+      delta *= -1;
+    }
+
+    if (this._moveStart === null) {
+      this._moveStart = parseFloat(this._root.style(this._position));
+      this._moveWidth = parseFloat(this._root.style('width'));
+    }
+
+    let value = this._moveStart + delta;
+
+    if (value < -this._moveWidth) {
+      value = -this._moveWidth;
+    } else if (value > 0) {
+      value = 0;
+    }
+
+    if (end === false) {
+      this._root.style(this._position, value + 'px');
+    } else {
+      if (value > -this._moveWidth / 2) {
+        this._visible = false;
+        this.show();
+      } else {
+        this._visible = true;
+        this.hide();
       }
-    });
+
+      this.move();
+    }
 
     return true;
   }
@@ -217,19 +252,7 @@ export default class Menu {
     return this;
   }
 
-  slider(action = true) {
-    if (action === false) {
-      return this._deleteSlider();
-    }
-
-    if (!this._slider) {
-      this._insertSlider();
-    }
-
-    return this._slider;
-  }
-
-  _insertGesture() {
+  _bindRoot() {
     this._gesture = this._root
       .gesture()
       .on('tap', (tapEvent) => {
@@ -237,17 +260,13 @@ export default class Menu {
           tapEvent.stopPropagation();
         }
       });
-
-    return this;
   }
 
-  _deleteGesture() {
+  _unbindRoot() {
     if (this._gesture) {
       this._gesture.destroy();
       this._gesture = null;
     }
-
-    return this;
   }
 
   _insertMedia(width, fixedAt) {
@@ -295,9 +314,5 @@ export default class Menu {
     }
 
     return this;
-  }
-
-  _opposite(position) {
-    return position === 'left' ? 'right' : 'left';
   }
 }
