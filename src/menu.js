@@ -1,11 +1,7 @@
 /* eslint prefer-reflect: "off" */
 
-import { select } from 'd3-selection';
+import { select } from 'd3';
 import { slider } from '@scola/d3-slider';
-import 'd3-selection-multi';
-import 'd3-transition';
-import '@scola/d3-gesture';
-import '@scola/d3-media';
 
 export default class Menu {
   constructor() {
@@ -105,7 +101,7 @@ export default class Menu {
     return this;
   }
 
-  media(width = '21.333em', fixedAt = '64em') {
+  size(width = '21.333em', fixedAt = '64em') {
     if (width === null) {
       return this._media;
     }

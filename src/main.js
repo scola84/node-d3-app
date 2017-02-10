@@ -1,9 +1,5 @@
-import { select } from 'd3-selection';
+import { select } from 'd3';
 import { slider } from '@scola/d3-slider';
-import 'd3-selection-multi';
-import 'd3-transition';
-import '@scola/d3-gesture';
-import '@scola/d3-media';
 
 export default class Main {
   constructor() {
@@ -91,7 +87,7 @@ export default class Main {
     return this;
   }
 
-  media(width = '64em', height = '48em', styles = null) {
+  size(width = '64em', height = '48em', styles = null) {
     if (width === null) {
       return this._media;
     }
