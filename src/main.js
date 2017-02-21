@@ -7,7 +7,6 @@ export default class Main {
     this._mode = 'over';
 
     this._height = null;
-    this._styles = null;
     this._width = null;
 
     this._gesture = null;
@@ -24,6 +23,7 @@ export default class Main {
       .remove()
       .classed('scola app', true)
       .styles({
+        'overflow': 'hidden',
         'position': 'relative',
         'z-index': 0
       });
@@ -61,10 +61,6 @@ export default class Main {
     return this._height;
   }
 
-  styles() {
-    return this._styles;
-  }
-
   width() {
     return this._width;
   }
@@ -87,7 +83,7 @@ export default class Main {
     return this;
   }
 
-  size(width = '64em', height = '48em', styles = null) {
+  size(width = '64em', height = '48em') {
     if (width === null) {
       return this._media;
     }
@@ -96,16 +92,8 @@ export default class Main {
       return this._deleteMedia();
     }
 
-    if (styles === null) {
-      styles = {
-        'border-radius': '1em',
-        'overflow': 'hidden',
-        'transform': 'scale(1)'
-      };
-    }
-
     if (!this._media) {
-      this._insertMedia(width, height, styles);
+      this._insertMedia(width, height);
     }
 
     return this;
@@ -281,26 +269,68 @@ export default class Main {
     menu.root().on('unfix.scola-app', null);
   }
 
-  _insertMedia(width, height, styles) {
+  _insertMedia(width, height) {
     this._width = width;
     this._height = height;
-    this._styles = styles;
 
-    this._media = this._root
-      .media(`(min-height: ${height}) and (min-width: ${width})`)
-      .styles(styles)
-      .media(`(min-height: ${height})`)
-      .style('height', height)
-      .media(`not all and (min-height: ${height})`)
-      .style('height', '100%')
-      .media(`(min-width: ${width})`)
-      .style('width', width)
-      .media(`not all and (min-width: ${width})`)
-      .styles({
-        'width': '100%',
-        'height': '100%'
-      })
-      .start();
+    const minWidthHeight = {
+      'border-radius': '1em'
+    };
+
+    const minHeight = {
+      'border-bottom': '1px solid #CCC',
+      'border-top': '1px solid #CCC',
+      height
+    };
+
+    const maxHeight = {
+      'border-top': 0,
+      'border-bottom': 0,
+      'height': '100%'
+    };
+
+    const minWidth = {
+      'border-left': '1px solid #CCC',
+      'border-right': '1px solid #CCC',
+      width
+    };
+
+    const maxWidth = {
+      'border-left': 0,
+      'border-right': 0,
+      'width': '100%'
+    };
+
+    if (width !== -1 && height !== -1) {
+      this._media = this._root
+        .media(`(min-height: ${height}) and (min-width: ${width})`)
+        .styles(minWidthHeight);
+    }
+
+    if (height !== -1) {
+      this._media = (this._media || this._root)
+        .media(`(min-height: ${height})`)
+        .styles(minHeight)
+        .media(`not all and (min-height: ${height})`)
+        .styles(maxHeight);
+    } else {
+      this._root.styles(maxHeight);
+    }
+
+    if (width !== -1) {
+      this._media = (this._media || this._root)
+        .media(`(min-width: ${width})`)
+        .styles(minWidth)
+        .media(`not all and (min-width: ${width})`)
+        .styles(maxHeight)
+        .styles(maxWidth);
+    } else {
+      this._root.styles(maxWidth);
+    }
+
+    if (this._media) {
+      this._media.start();
+    }
 
     return this;
   }
