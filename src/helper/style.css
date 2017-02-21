@@ -1,0 +1,219 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css');
+* {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: default;
+}
+
+input,
+button,
+a {
+  outline: none;
+}
+
+input {
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  display: none;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+::-webkit-input-placeholder {
+  color: #AAA;
+}
+
+::-moz-placeholder {
+  color: #AAA;
+  opacity: 1
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+
+/* Scola */
+
+.scola.pop .scola.body .scola.buttons .scola.button:focus,
+.scola.pop .scola.body .scola.buttons .scola.button:active,
+.scola.list .scola.body>.scola.button:active,
+.scola.table.click tr:not(.message):active {
+  background: #CCC !important;
+}
+
+.scola.control.bar.main .scola.control.button.main:active {
+  opacity: 0.5;
+}
+
+.scola.control.bar.main .scola.control.button.main.disabled,
+.scola.list .scola.button.disabled {
+  color: #AAA !important;
+  cursor: default !important;
+}
+
+.scola.control.bar.main .scola.control.button.main.disabled:active {
+  opacity: 1 !important;
+}
+
+.scola.list .scola.button.disabled:active {
+  background: #FFF !important;
+}
+
+.scola.item.nav:not(.disabled):active,
+.scola.item.radio:active,
+.scola.item.check:active {
+  background: #CCC !important;
+}
+
+.scola.item.menu.selected>*,
+.scola.item.menu.selected+.scola.item>* {
+  border-top-color: inherit !important;
+}
+
+.scola.item.nav:not(.disabled):active+.scola.item>*,
+.scola.item.radio:active+.scola.item>*,
+.scola.item.check:active+.scola.item>* {
+  border-top-color: inherit !important;
+}
+
+.scola.control.button button,
+.scola.scroller button,
+.scola.item .scola.button button,
+.scola.item .scola.switch button,
+.scola.item .scola.text button,
+.scola.item.date button {
+  border: 1px solid transparent !important;
+}
+
+.scola.control .scola.button button:focus,
+.scola.scroller button:focus,
+.scola.item .scola.button button:focus,
+.scola.item .scola.switch button:focus,
+.scola.item .scola.text button:focus,
+.scola.item.date button:not(.disabled):focus {
+  border: 1px dotted #000 !important;
+}
+
+.scola.control .scola.button button[tabindex="-1"]:focus,
+.scola.scroller button[tabindex="-1"]:focus,
+.scola.item .scola.button button[tabindex="-1"]:focus,
+.scola.item .scola.switch button[tabindex="-1"]:focus,
+.scola.item .scola.text button[tabindex="-1"]:focus,
+.scola.item.date button[tabindex="-1"]:not(.disabled):focus {
+  border: 1px solid transparent !important;
+}
+
+.scola.control .scola.button button:before,
+.scola.item .scola.button button:before,
+.scola.item .scola.icon button:before {
+  display: block;
+  width: 100%;
+}
+
+.ion-ios-arrow-back:before,
+.ion-ios-arrow-forward:before,
+.ion-ios-arrow-thin-right:before {
+  margin-top: -1px
+}
+
+*[dir=rtl] .scola.item .scola.switch .scola.area,
+*[dir=rtl] .ion-ios-arrow-back:before,
+*[dir=rtl] .ion-ios-arrow-forward:before,
+*[dir=rtl] .ion-ios-arrow-thin-right:before {
+  transform: rotateY(180deg);
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+  .scola.table .scola.body,
+  .scola.table th,
+  .scola.table td {
+    border-top-width: 0.5px !important;
+    border-bottom-width: 0.5px !important;
+  }
+  .scola.graph .scola.body {
+    border-top-width: 0.5px !important;
+    border-bottom-width: 0.5px !important;
+  }
+  .scola.item .scola.padding {
+    border-top-width: 0.5px !important;
+  }
+  .scola.item .scola.button {
+    border-top-width: 0.5px !important;
+  }
+  .scola.item .scola.icon {
+    border-top-width: 0.5px !important;
+  }
+  .scola.item .scola.input {
+    border-top-width: 0.5px !important;
+  }
+  .scola.item .scola.scroller {
+    border-top-width: 0.5px !important;
+  }
+  .scola.item .scola.switch {
+    border-top-width: 0.5px !important;
+  }
+  .scola.item .scola.text {
+    border-top-width: 0.5px !important;
+  }
+  .scola.item.date .scola.select {
+    border-top-width: 0.5px !important;
+  }
+  .scola.list .scola.body {
+    border-width: 0.5px 0 !important;
+  }
+  .scola.menu {
+    border-width: 0.5px !important;
+  }
+  .scola.panel .scola.header {
+    border-bottom-width: 0.5px !important;
+  }
+  .scola.panel .scola.footer {
+    border-top-width: 0.5px !important;
+  }
+  .scola.pop .scola.buttons .scola.button {
+    border-top-width: 0.5px !important;
+  }
+  .scola.pop .scola.buttons .scola.button .scola.border {
+    width: 0.5px !important;
+  }
+  .scola.tab.inline .scola.buttons .scola.inner {
+    border-width: 0.5px !important;
+  }
+  .scola.tab.inline .scola.buttons .scola.button .scola.border {
+    border-left-width: 0.5px !important;
+  }
+  .scola.tab.panel .scola.buttons {
+    border-top-width: 0.5px !important;
+  }
+  .scola.tab *[dir=rtl] .ion-ios-arrow-forward:before {
+    content: "\f3cf" !important;
+    text-align: left;
+  }
+}

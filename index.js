@@ -1,3 +1,4 @@
+import './src/helper/style.css';
 import Main from './src/main';
 import Menu from './src/menu';
 
