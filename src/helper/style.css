@@ -13,14 +13,14 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  display: flex;
   align-items: center;
+  cursor: default;
+  display: flex;
+  height: 100%;
   justify-content: center;
+  margin: 0;
   position: fixed;
   width: 100%;
-  height: 100%;
-  margin: 0;
-  cursor: default;
 }
 
 input,
@@ -58,10 +58,6 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
-
-/* Scola */
-
-.scola.pop .scola.body .scola.buttons .scola.button:focus,
 .scola.pop .scola.body .scola.buttons .scola.button:active,
 .scola.list .scola.body>.scola.button:active,
 .scola.table.click tr:not(.message):active {
@@ -72,35 +68,26 @@ input:-webkit-autofill {
   opacity: 0.5;
 }
 
-.scola.control.bar.main .scola.control.button.main.disabled,
-.scola.list .scola.button.disabled {
-  color: #AAA !important;
-  cursor: default !important;
-}
-
-.scola.control.bar.main .scola.control.button.main.disabled:active {
-  opacity: 1 !important;
-}
-
-.scola.list .scola.button.disabled:active {
-  background: #FFF !important;
-}
-
-.scola.item.nav:not(.disabled):active,
+.scola.item.nav:active,
 .scola.item.radio:active,
 .scola.item.check:active {
   background: #CCC !important;
 }
 
-.scola.item.menu.selected>*,
-.scola.item.menu.selected+.scola.item>* {
+.scola.item.check:active+.scola.item>*,
+.scola.item.nav:active+.scola.item>*,
+.scola.item.radio:active+.scola.item>* {
   border-top-color: inherit !important;
 }
 
-.scola.item.nav:not(.disabled):active+.scola.item>*,
-.scola.item.radio:active+.scola.item>*,
-.scola.item.check:active+.scola.item>* {
-  border-top-color: inherit !important;
+.scola.item.menu.selected>*,
+.scola.item.menu.selected+.scola.item>*,
+tr.selected+tr .scola.item>* {
+  border-top-color: #007AFF !important;
+}
+
+.scola.item.menu.selected>* {
+  color: #FFF !important;
 }
 
 .scola.control.button button,
@@ -112,6 +99,7 @@ input:-webkit-autofill {
   border: 1px solid transparent !important;
 }
 
+.scola.pop .scola.button button:focus,
 .scola.control .scola.button button:focus,
 .scola.scroller button:focus,
 .scola.item .scola.button button:focus,
@@ -121,6 +109,7 @@ input:-webkit-autofill {
   border: 1px dotted #000 !important;
 }
 
+.scola.pop .scola.button button[tabindex="-1"]:focus,
 .scola.control .scola.button button[tabindex="-1"]:focus,
 .scola.scroller button[tabindex="-1"]:focus,
 .scola.item .scola.button button[tabindex="-1"]:focus,
@@ -151,12 +140,6 @@ input:-webkit-autofill {
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
-  .scola.table .scola.body,
-  .scola.table th,
-  .scola.table td {
-    border-top-width: 0.5px !important;
-    border-bottom-width: 0.5px !important;
-  }
   .scola.graph .scola.body {
     border-top-width: 0.5px !important;
     border-bottom-width: 0.5px !important;
@@ -212,8 +195,10 @@ input:-webkit-autofill {
   .scola.tab.panel .scola.buttons {
     border-top-width: 0.5px !important;
   }
-  .scola.tab *[dir=rtl] .ion-ios-arrow-forward:before {
-    content: "\f3cf" !important;
-    text-align: left;
+  .scola.table .scola.body,
+  .scola.table th,
+  .scola.table td {
+    border-top-width: 0.5px !important;
+    border-bottom-width: 0.5px !important;
   }
 }

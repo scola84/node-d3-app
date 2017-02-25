@@ -298,8 +298,8 @@ export default class Menu {
       .remove(true)
       .rotate(false);
 
-    this._root.node()
-      .appendChild(this._slider.root().node());
+    this._root
+      .append(() => this._slider.root().node());
 
     return this;
   }

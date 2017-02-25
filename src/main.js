@@ -349,8 +349,8 @@ export default class Main {
       .remove(true)
       .rotate(false);
 
-    this._main.node()
-      .appendChild(this._slider.root().node());
+    this._main
+      .append(() => this._slider.root().node());
 
     return this;
   }
@@ -371,8 +371,8 @@ export default class Main {
       this._root.node()
         .insertBefore(menu.root().node(), this._main.node());
     } else {
-      this._root.node()
-        .appendChild(menu.root().node());
+      this._root
+        .append(() => menu.root().node());
     }
 
     this._menus.add(menu);
