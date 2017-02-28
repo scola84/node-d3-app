@@ -58,14 +58,14 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
-.scola.pop .scola.body .scola.buttons .scola.button:active,
-.scola.list .scola.body>.scola.button:active,
-.scola.table.click tr:not(.message):active {
-  background: #CCC !important;
-}
-
 .scola.control.bar.main .scola.control.button.main:active {
   opacity: 0.5;
+}
+
+.scola.list .scola.body>.scola.button:active,
+.scola.pop .scola.body .scola.buttons .scola.button:active,
+.scola.table.click tr:not(.message):active {
+  background: #CCC !important;
 }
 
 .scola.item.nav:active,
@@ -74,19 +74,19 @@ input:-webkit-autofill {
   background: #CCC !important;
 }
 
-.scola.item.check:active+.scola.item>*,
-.scola.item.nav:active+.scola.item>*,
-.scola.item.radio:active+.scola.item>* {
+.scola.item.check:active+.scola.item .scola.over>*,
+.scola.item.nav:active+.scola.item .scola.over>*,
+.scola.item.radio:active+.scola.item .scola.over>* {
   border-top-color: inherit !important;
 }
 
-.scola.item.menu.selected>*,
-.scola.item.menu.selected+.scola.item>*,
-tr.selected+tr .scola.item>* {
+.scola.item.menu.selected .scola.over>*,
+.scola.item.menu.selected+.scola.item .scola.over>*,
+tr.selected+tr .scola.item .scola.over>* {
   border-top-color: #007AFF !important;
 }
 
-.scola.item.menu.selected>* {
+.scola.item.menu.selected .scola.over>* {
   color: #FFF !important;
 }
 
@@ -141,31 +141,9 @@ tr.selected+tr .scola.item>* {
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
   .scola.graph .scola.body {
-    border-top-width: 0.5px !important;
-    border-bottom-width: 0.5px !important;
+    border-width: 0.5px 0 !important;
   }
-  .scola.item .scola.padding {
-    border-top-width: 0.5px !important;
-  }
-  .scola.item .scola.button {
-    border-top-width: 0.5px !important;
-  }
-  .scola.item .scola.icon {
-    border-top-width: 0.5px !important;
-  }
-  .scola.item .scola.input {
-    border-top-width: 0.5px !important;
-  }
-  .scola.item .scola.scroller {
-    border-top-width: 0.5px !important;
-  }
-  .scola.item .scola.switch {
-    border-top-width: 0.5px !important;
-  }
-  .scola.item .scola.text {
-    border-top-width: 0.5px !important;
-  }
-  .scola.item.date .scola.select {
+  .scola.item .scola.over>* {
     border-top-width: 0.5px !important;
   }
   .scola.list .scola.body {
@@ -198,7 +176,6 @@ tr.selected+tr .scola.item>* {
   .scola.table .scola.body,
   .scola.table th,
   .scola.table td {
-    border-top-width: 0.5px !important;
-    border-bottom-width: 0.5px !important;
+    border-width: 0.5px 0 !important;
   }
 }
