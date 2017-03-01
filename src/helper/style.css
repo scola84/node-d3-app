@@ -119,16 +119,12 @@ tr.selected+tr .scola.item .scola.over>* {
   border: 1px solid transparent !important;
 }
 
+.scola.icon div:before,
 .scola.control .scola.button button:before,
 .scola.item .scola.button button:before,
 .scola.item .scola.icon button:before {
   display: block;
   width: 100%;
-}
-
-.ion-ios-arrow-back:before,
-.ion-ios-arrow-forward:before,
-.ion-ios-arrow-thin-right:before {
   margin-top: -1px
 }
 
