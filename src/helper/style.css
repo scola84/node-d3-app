@@ -128,11 +128,24 @@ tr.selected+tr .scola.item .scola.over>* {
   margin-top: -1px
 }
 
+.ion-load-d:before {
+  animation: spin 1s infinite linear;
+}
+
 *[dir=rtl] .scola.item .scola.switch .scola.area,
 *[dir=rtl] .ion-ios-arrow-back:before,
 *[dir=rtl] .ion-ios-arrow-forward:before,
 *[dir=rtl] .ion-ios-arrow-thin-right:before {
   transform: rotateY(180deg);
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
