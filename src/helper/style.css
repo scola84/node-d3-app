@@ -90,15 +90,6 @@ tr.selected+tr .scola.item .scola.over>* {
   color: #FFF !important;
 }
 
-.scola.control.button button,
-.scola.scroller button,
-.scola.item .scola.button button,
-.scola.item .scola.switch button,
-.scola.item .scola.text button,
-.scola.item.date button {
-  border: 1px solid transparent !important;
-}
-
 .scola.pop .scola.button button:focus,
 .scola.control .scola.button button:focus,
 .scola.scroller button:focus,
