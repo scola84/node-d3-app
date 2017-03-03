@@ -480,7 +480,17 @@ export default class Main {
       };
     }
 
-    if (swipeEvent.deltaX > 0) {
+    if (swipeEvent.type === 'tap') {
+      if (this._mode !== 'over') {
+        return;
+      }
+
+      if (menuLeft && menuLeft.visible()) {
+        menuLeft.hide();
+      } else if (menuRight && menuRight.visible()) {
+        menuRight.hide();
+      }
+    } else if (swipeEvent.deltaX > 0) {
       if (menuRight && menuRight.visible()) {
         menuRight.hide();
         this._transit();
@@ -495,16 +505,6 @@ export default class Main {
       } else if (menuRight) {
         menuRight.show();
         this._transit('right');
-      }
-    } else {
-      if (this._mode !== 'over') {
-        return;
-      }
-
-      if (menuLeft && menuLeft.visible()) {
-        menuLeft.hide();
-      } else if (menuRight && menuRight.visible()) {
-        menuRight.hide();
       }
     }
   }
