@@ -2,10 +2,15 @@ import './src/helper/style.css';
 import Main from './src/main';
 import Menu from './src/menu';
 
-export function main() {
+function main() {
   return new Main();
 }
 
-export function menu() {
+function menu() {
   return new Menu();
 }
+
+export {
+  main,
+  menu
+};
