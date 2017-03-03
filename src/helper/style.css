@@ -23,13 +23,15 @@ body {
   width: 100%;
 }
 
-input,
+a,
 button,
-a {
+input,
+textarea {
   outline: none;
 }
 
-input {
+input,
+textarea {
   border-radius: 0;
   margin: 0;
   padding: 0;
