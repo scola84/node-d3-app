@@ -76,19 +76,19 @@ input:-webkit-autofill {
   background: #CCC !important;
 }
 
-.scola.item.check:active+.scola.item .scola.over>*,
-.scola.item.nav:active+.scola.item .scola.over>*,
-.scola.item.radio:active+.scola.item .scola.over>* {
+.scola.item.check:active+.scola.item>*,
+.scola.item.nav:active+.scola.item>*,
+.scola.item.radio:active+.scola.item>* {
   border-top-color: inherit !important;
 }
 
-.scola.item.menu.selected .scola.over>*,
-.scola.item.menu.selected+.scola.item .scola.over>*,
-tr.selected+tr .scola.item .scola.over>* {
+.scola.item.menu.selected>*,
+.scola.item.menu.selected+.scola.item>*,
+tr.selected+tr .scola.item>* {
   border-top-color: #007AFF !important;
 }
 
-.scola.item.menu.selected .scola.over>* {
+.scola.item.menu.selected>* {
   color: #FFF !important;
 }
 
@@ -147,7 +147,7 @@ tr.selected+tr .scola.item .scola.over>* {
   .scola.graph .scola.body {
     border-width: 0.5px 0 !important;
   }
-  .scola.item .scola.over>* {
+  .scola.item>* {
     border-top-width: 0.5px !important;
   }
   .scola.list .scola.body {
