@@ -23,12 +23,23 @@ export default class Main {
       .remove()
       .classed('scola app', true)
       .styles({
+        'display': 'flex',
+        'flex-direction': 'column',
         'overflow': 'hidden',
         'position': 'relative',
         'z-index': 0
       });
 
-    this._main = this._root
+    this._message = null;
+
+    this._body = this._root
+      .append('div')
+      .classed('scola body', true)
+      .styles({
+        'flex': 1
+      });
+
+    this._main = this._body
       .append('div')
       .classed('scola main', true)
       .styles({
@@ -109,6 +120,30 @@ export default class Main {
     }
 
     return this._slider;
+  }
+
+  message(value = null, delay = null) {
+    if (value === null) {
+      return this._message;
+    }
+
+    clearTimeout(this._timeout);
+
+    if (value === false) {
+      return this._deleteMessage();
+    }
+
+    if (delay !== null) {
+      return this._delayMessage(value, delay);
+    }
+
+    this._data = null;
+
+    if (this._message) {
+      return this._updateMessage(value);
+    }
+
+    return this._insertMessage(value);
   }
 
   append(menu, action = true) {
@@ -364,14 +399,59 @@ export default class Main {
     return this;
   }
 
+  _insertMessage(text) {
+    this._message = this._root
+      .append('div')
+      .remove()
+      .classed('scola message', true)
+      .styles({
+        'background': '#CCC',
+        'font-size': '0.9em',
+        'line-height': '2.22em',
+        'text-align': 'center'
+      })
+      .text(text);
+
+    this._root.node().insertBefore(this._message.node(),
+      this._body.node());
+
+    return this;
+  }
+
+  _updateMessage(text) {
+    this._message.text(text);
+    return this;
+  }
+
+  _deleteMessage() {
+    if (this._message) {
+      this._message.remove();
+      this._message = null;
+    }
+
+    return this;
+  }
+
+  _delayMessage(text, delay) {
+    delay = delay === true ? 250 : delay;
+
+    clearTimeout(this._timeout);
+
+    this._timeout = setTimeout(() => {
+      this.message(text);
+    }, delay);
+
+    return this;
+  }
+
   _insertMenu(menu) {
     menu.mode(this._mode);
 
     if (menu.position() === 'left') {
-      this._root.node()
+      this._body.node()
         .insertBefore(menu.root().node(), this._main.node());
     } else {
-      this._root
+      this._body
         .append(() => menu.root().node());
     }
 

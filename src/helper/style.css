@@ -60,11 +60,22 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
-.scola.control.bar.main .scola.control.button.main:active {
+fieldset[disabled] .scola.control.button.main *,
+fieldset[disabled] .scola.list .scola.body>.scola.button {
+  cursor: default !important;
+}
+
+fieldset[disabled] .scola.control.button.main button,
+fieldset[disabled] .scola.list .scola.body>.scola.button button {
+  cursor: default !important;
   opacity: 0.5;
 }
 
-.scola.list .scola.body>.scola.button:active,
+fieldset:not([disabled]) .scola.control.button.main:active button {
+  opacity: 0.5;
+}
+
+fieldset:not([disabled]) .scola.list .scola.body>.scola.button:active,
 .scola.pop .scola.body .scola.buttons .scola.button:active,
 .scola.table.click tr:not(.message):active {
   background: #CCC !important;
