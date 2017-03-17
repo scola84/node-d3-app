@@ -12,6 +12,7 @@ export default class Main {
     this._gesture = null;
     this._media = null;
     this._slider = null;
+    this._message = null;
     this._menus = new Set();
 
     this._panning = false;
@@ -30,13 +31,12 @@ export default class Main {
         'z-index': 0
       });
 
-    this._message = null;
-
     this._body = this._root
       .append('div')
       .classed('scola body', true)
       .styles({
-        'flex': 1
+        'flex': 1,
+        'position': 'relative'
       });
 
     this._main = this._body
