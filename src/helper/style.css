@@ -60,39 +60,6 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
-fieldset[disabled] .scola.control.button.main *,
-fieldset[disabled] .scola.list .scola.body>.scola.button {
-  cursor: default !important;
-}
-
-fieldset[disabled] .scola.control.button.main button,
-fieldset[disabled] .scola.list .scola.body>.scola.button button {
-  cursor: default !important;
-  opacity: 0.5;
-}
-
-fieldset:not([disabled]) .scola.control.button.main:active button {
-  opacity: 0.5;
-}
-
-fieldset:not([disabled]) .scola.list .scola.body>.scola.button:active,
-.scola.pop .scola.body .scola.buttons .scola.button:active,
-.scola.table.click tr:not(.message):active {
-  background: #CCC !important;
-}
-
-.scola.item.nav:active,
-.scola.item.radio:active,
-.scola.item.check:active {
-  background: #CCC !important;
-}
-
-.scola.item.check:active+.scola.item>*,
-.scola.item.nav:active+.scola.item>*,
-.scola.item.radio:active+.scola.item>* {
-  border-top-color: inherit !important;
-}
-
 .scola.item.menu.selected>*,
 .scola.item.menu.selected+.scola.item>*,
 tr.selected+tr .scola.item>* {
@@ -103,30 +70,54 @@ tr.selected+tr .scola.item>* {
   color: #FFF !important;
 }
 
+.scola.control.button.disabled,
+.scola.item.disabled,
+.scola.item.disabled .scola.button button,
+.scola.item.disabled .scola.switch .scola.area,
+.scola.scroller.disabled {
+  cursor: default !important;
+}
+
+.scola.control.button:active,
+.scola.control.button.disabled button,
+.scola.item.button.disabled button,
+.scola.item.disabled .scola.button button,
+.scola.item.disabled .scola.icon div,
+.scola.item.disabled .scola.input input,
+.scola.item.disabled .scola.scroller .scola.scroller,
+.scola.item.disabled .scola.switch .scola.area,
+.scola.item.disabled .scola.text button {
+  opacity: 0.5;
+}
+
+.scola.item.button:active:not(.disabled),
+.scola.item.check:active:not(.disabled),
+.scola.item.nav:active:not(.disabled),
+.scola.item.radio:active:not(.disabled),
+.scola.pop .scola.body .scola.buttons .scola.button:active,
+.scola.table.click tr:not(.message):active {
+  background: #CCC !important;
+}
+
+.scola.item.check:active:not(.disabled)+.scola.item>*,
+.scola.item.nav:active:not(.disabled)+.scola.item>*,
+.scola.item.radio:active:not(.disabled)+.scola.item>* {
+  border-top-color: inherit !important;
+}
+
+.scola.control.button:not(.disabled) button:not([tabindex="-1"]):focus,
+.scola.item.button:not(.disabled) button:not([tabindex="-1"]):focus,
+.scola.item:not(.disabled) .scola.button button:not([tabindex="-1"]):focus,
+.scola.item:not(.disabled) .scola.switch button:not([tabindex="-1"]):focus,
+.scola.item:not(.disabled) .scola.text button:not([tabindex="-1"]):focus,
+.scola.item.date button:not(.disabled):focus,
 .scola.pop .scola.button button:focus,
-.scola.control .scola.button button:focus,
-.scola.scroller button:focus,
-.scola.list .scola.body>.scola.button button:focus,
-.scola.item .scola.button button:focus,
-.scola.item .scola.switch button:focus,
-.scola.item .scola.text button:focus,
-.scola.item.date button:not(.disabled):focus {
+.scola.scroller:not(.disabled) button:not([tabindex="-1"]):focus {
   border: 1px dotted #000 !important;
 }
 
-.scola.pop .scola.button button[tabindex="-1"]:focus,
-.scola.control .scola.button button[tabindex="-1"]:focus,
-.scola.scroller button[tabindex="-1"]:focus,
-.scola.list .scola.body>.scola.button button[tabindex="-1"]:focus,
-.scola.item .scola.button button[tabindex="-1"]:focus,
-.scola.item .scola.switch button[tabindex="-1"]:focus,
-.scola.item .scola.text button[tabindex="-1"]:focus,
-.scola.item.date button[tabindex="-1"]:not(.disabled):focus {
-  border: 1px solid transparent !important;
-}
-
 .scola.icon div:before,
-.scola.control .scola.button button:before,
+.scola.control.button button:before,
 .scola.item .scola.button button:before,
 .scola.item .scola.icon button:before {
   display: block;
