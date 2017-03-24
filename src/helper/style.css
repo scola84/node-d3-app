@@ -78,7 +78,7 @@ tr.selected+tr .scola.item>* {
   cursor: default !important;
 }
 
-.scola.control.button:active,
+.scola.control.button:active:not(.disabled),
 .scola.control.button.disabled button,
 .scola.item.button.disabled button,
 .scola.item.disabled .scola.button button,
