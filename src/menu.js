@@ -153,8 +153,8 @@ export default class Menu {
     this._visible = value;
 
     if (this._mode !== 'under') {
-      const width = parseFloat(this._root.style('width'));
-      const position = value === true ? '0px' : -width + 'px';
+      const width = this._root.style('width');
+      const position = value === true ? '0px' : '-' + width;
 
       return this._root
         .transition()
