@@ -151,35 +151,29 @@ export default class Menu {
     return this;
   }
 
-  show() {
-    if (this._fixed || this._visible) {
+  show(value = null) {
+    const cancel = this._fixed === true ||
+      this._visible === value;
+
+    if (cancel) {
       return false;
     }
 
-    if (this._mode !== 'under') {
-      this._root
-        .transition()
-        .style(this._position, '0px');
+    if (value === null) {
+      return this._visible;
     }
 
-    this._visible = true;
-    return true;
-  }
-
-  hide() {
-    if (this._fixed || !this._visible) {
-      return false;
-    }
+    this._visible = value;
 
     if (this._mode !== 'under') {
       const width = parseFloat(this._root.style('width'));
+      const position = value === true ? '0px' : -width + 'px';
 
-      this._root
+      return this._root
         .transition()
-        .style(this._position, '-' + width + 'px');
+        .style(this._position, position);
     }
 
-    this._visible = false;
     return true;
   }
 
@@ -215,14 +209,8 @@ export default class Menu {
     if (end === false) {
       this._root.style(this._position, value + 'px');
     } else {
-      if (value > -this._moveWidth / 2) {
-        this._visible = false;
-        this.show();
-      } else {
-        this._visible = true;
-        this.hide();
-      }
-
+      this._visible = value <= -this._moveWidth / 2;
+      this.show(!this._visible);
       this.move();
     }
 
@@ -240,12 +228,7 @@ export default class Menu {
   }
 
   toggle() {
-    if (this._visible) {
-      this.hide();
-    } else {
-      this.show();
-    }
-
+    this.show(!this._visible);
     return this;
   }
 

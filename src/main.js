@@ -5,6 +5,7 @@ export default class Main {
   constructor() {
     this._fade = true;
     this._mode = 'over';
+    this._visible = true;
 
     this._height = null;
     this._width = null;
@@ -129,25 +130,24 @@ export default class Main {
     return this._insertMenu(menu);
   }
 
-  hide() {
+  show(value = null) {
     if (this._fade === false) {
       return false;
     }
 
-    return this._root
-      .transition()
-      .style('opacity', 0);
-  }
-
-  show() {
-    if (this._fade === false) {
-      return false;
+    if (value === null) {
+      return this._visible;
     }
 
+    this._visible = value;
+
+    const begin = value === true ? 0 : 1;
+    const end = value === true ? 1 : 0;
+
     return this._root
-      .style('opacity', 0)
+      .style('opacity', begin)
       .transition()
-      .style('opacity', 1);
+      .style('opacity', end);
   }
 
   move(delta = null, end = false) {
@@ -406,7 +406,7 @@ export default class Main {
       if (menu.fixed()) {
         style[menu.position()] = menu.width();
       } else {
-        menu.hide();
+        menu.show(false);
       }
     });
 
@@ -492,24 +492,24 @@ export default class Main {
       }
 
       if (menuLeft && menuLeft.visible()) {
-        menuLeft.hide();
+        menuLeft.show(false);
       } else if (menuRight && menuRight.visible()) {
-        menuRight.hide();
+        menuRight.show(false);
       }
     } else if (swipeEvent.deltaX > 0) {
       if (menuRight && menuRight.visible()) {
-        menuRight.hide();
+        menuRight.show(false);
         this._transit();
       } else if (menuLeft) {
-        menuLeft.show();
+        menuLeft.show(true);
         this._transit('left');
       }
     } else if (swipeEvent.deltaX < 0) {
       if (menuLeft && menuLeft.visible()) {
-        menuLeft.hide();
+        menuLeft.show(false);
         this._transit();
       } else if (menuRight) {
-        menuRight.show();
+        menuRight.show(true);
         this._transit('right');
       }
     }
