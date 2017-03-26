@@ -163,13 +163,13 @@ export default class Main {
 
     this._menus.forEach((menu) => {
       if (!menuLeft && menu.position() === 'left' &&
-        menu.fixed() === false) {
+        menu.fix() === false) {
 
         menuLeft = menu;
       }
 
       if (!menuRight && menu.position() === 'right' &&
-        menu.fixed() === false) {
+        menu.fix() === false) {
 
         menuRight = menu;
       }
@@ -267,12 +267,10 @@ export default class Main {
 
   _bindMenu(menu) {
     menu.root().on('fix.scola-app', () => this._fixMenu());
-    menu.root().on('unfix.scola-app', () => this._fixMenu());
   }
 
   _unbindMenu(menu) {
     menu.root().on('fix.scola-app', null);
-    menu.root().on('unfix.scola-app', null);
   }
 
   _insertMedia(width, height) {
@@ -403,7 +401,7 @@ export default class Main {
     };
 
     this._menus.forEach((menu) => {
-      if (menu.fixed()) {
+      if (menu.fix()) {
         style[menu.position()] = menu.width();
       } else {
         menu.show(false);
@@ -430,7 +428,7 @@ export default class Main {
     let found = null;
 
     this._menus.forEach((menu) => {
-      if (menu.visible()) {
+      if (menu.show()) {
         found = menu;
         return;
       }
@@ -465,13 +463,13 @@ export default class Main {
 
     this._menus.forEach((menu) => {
       if (!menuLeft && menu.position() === 'left' &&
-        menu.fixed() === false) {
+        menu.fix() === false) {
 
         menuLeft = menu;
       }
 
       if (!menuRight && menu.position() === 'right' &&
-        menu.fixed() === false) {
+        menu.fix() === false) {
 
         menuRight = menu;
       }
@@ -491,13 +489,13 @@ export default class Main {
         return;
       }
 
-      if (menuLeft && menuLeft.visible()) {
+      if (menuLeft && menuLeft.show()) {
         menuLeft.show(false);
-      } else if (menuRight && menuRight.visible()) {
+      } else if (menuRight && menuRight.show()) {
         menuRight.show(false);
       }
     } else if (swipeEvent.deltaX > 0) {
-      if (menuRight && menuRight.visible()) {
+      if (menuRight && menuRight.show()) {
         menuRight.show(false);
         this._transit();
       } else if (menuLeft) {
@@ -505,7 +503,7 @@ export default class Main {
         this._transit('left');
       }
     } else if (swipeEvent.deltaX < 0) {
-      if (menuLeft && menuLeft.visible()) {
+      if (menuLeft && menuLeft.show()) {
         menuLeft.show(false);
         this._transit();
       } else if (menuRight) {

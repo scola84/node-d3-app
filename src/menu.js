@@ -49,16 +49,8 @@ export default class Menu {
     return this._root;
   }
 
-  fixed() {
-    return this._fixed;
-  }
-
   fixedAt() {
     return this._fixedAt;
-  }
-
-  visible() {
-    return this._visible;
   }
 
   width() {
@@ -129,38 +121,33 @@ export default class Menu {
     return this._slider;
   }
 
-  fix() {
-    this._root
-      .style(this._position, '0px');
+  fix(value = null) {
+    if (value === null) {
+      return this._fixed;
+    }
 
-    this._fixed = true;
-    this._visible = true;
+    this._fixed = value;
+    this._visible = value;
 
-    this._root.dispatch('fix');
-    return this;
-  }
+    const position = value === true || this._mode === 'under' ?
+      '0px' : '-' + this._width;
 
-  unfix() {
-    this._root.style(this._position,
-      this._mode === 'under' ? '0px' : '-' + this._width);
+    this._root.style(this._position, position);
 
-    this._fixed = false;
-    this._visible = false;
-
-    this._root.dispatch('unfix');
+    this._root.dispatch('fix', { detail: value });
     return this;
   }
 
   show(value = null) {
+    if (value === null) {
+      return this._visible;
+    }
+
     const cancel = this._fixed === true ||
       this._visible === value;
 
     if (cancel) {
       return false;
-    }
-
-    if (value === null) {
-      return this._visible;
     }
 
     this._visible = value;
@@ -218,13 +205,7 @@ export default class Menu {
   }
 
   reset() {
-    if (this._fixed) {
-      this.fix();
-    } else {
-      this.unfix();
-    }
-
-    return this;
+    return this.fix(this._fixed);
   }
 
   toggle() {
@@ -259,9 +240,9 @@ export default class Menu {
       .media(`not all and (min-width: ${width})`)
       .style('width', '85%')
       .media(`not all and (min-width: ${fixedAt})`)
-      .call(() => this.unfix())
+      .call(() => this.fix(false))
       .media(`(min-width: ${fixedAt})`)
-      .call(() => this.fix())
+      .call(() => this.fix(true))
       .start();
 
     return this;
