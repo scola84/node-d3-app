@@ -129,29 +129,25 @@ export default class Main {
     return this._insertMenu(menu);
   }
 
-  hide(callback = () => {}) {
-    if (!this._fade) {
-      callback();
-      return;
+  hide() {
+    if (this._fade === false) {
+      return false;
     }
 
-    this._root
+    return this._root
       .transition()
-      .style('opacity', 0)
-      .on('end', callback);
+      .style('opacity', 0);
   }
 
-  show(callback = () => {}) {
-    if (!this._fade) {
-      callback();
-      return;
+  show() {
+    if (this._fade === false) {
+      return false;
     }
 
-    this._root
+    return this._root
       .style('opacity', 0)
       .transition()
-      .style('opacity', 1)
-      .on('end', callback);
+      .style('opacity', 1);
   }
 
   move(delta = null, end = false) {
