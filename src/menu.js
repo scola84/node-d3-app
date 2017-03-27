@@ -102,7 +102,7 @@ export default class Menu {
       return this._deleteMedia();
     }
 
-    if (!this._media) {
+    if (this._media === null) {
       this._insertMedia(width, fixedAt);
     }
 
@@ -114,14 +114,14 @@ export default class Menu {
       return this._deleteSlider();
     }
 
-    if (!this._slider) {
+    if (this._slider === null) {
       this._insertSlider();
     }
 
     return this._slider;
   }
 
-  fix(value = null) {
+  fixed(value = null) {
     if (value === null) {
       return this._fixed;
     }
@@ -143,10 +143,11 @@ export default class Menu {
       return this._visible;
     }
 
-    const cancel = this._fixed === true ||
+    const cancel =
+      this._fixed === true ||
       this._visible === value;
 
-    if (cancel) {
+    if (cancel === true) {
       return false;
     }
 
@@ -205,7 +206,7 @@ export default class Menu {
   }
 
   reset() {
-    return this.fix(this._fixed);
+    return this.fixed(this._fixed);
   }
 
   toggle() {
@@ -217,7 +218,7 @@ export default class Menu {
     this._gesture = this._root
       .gesture()
       .on('tap', (tapEvent) => {
-        if (!this._fixed) {
+        if (this._fixed === true) {
           tapEvent.stopPropagation();
         }
       });
@@ -240,9 +241,9 @@ export default class Menu {
       .media(`not all and (min-width: ${width})`)
       .style('width', '85%')
       .media(`not all and (min-width: ${fixedAt})`)
-      .call(() => this.fix(false))
+      .call(() => this.fixed(false))
       .media(`(min-width: ${fixedAt})`)
-      .call(() => this.fix(true))
+      .call(() => this.fixed(true))
       .start();
 
     return this;

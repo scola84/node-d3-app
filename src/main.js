@@ -103,7 +103,7 @@ export default class Main {
       return this._deleteMedia();
     }
 
-    if (!this._media) {
+    if (this._media === null) {
       this._insertMedia(width, height);
     }
 
@@ -115,7 +115,7 @@ export default class Main {
       return this._deleteSlider();
     }
 
-    if (!this._slider) {
+    if (this._slider === null) {
       this._insertSlider();
     }
 
@@ -162,14 +162,16 @@ export default class Main {
     let menuRight = null;
 
     this._menus.forEach((menu) => {
-      if (!menuLeft && menu.position() === 'left' &&
-        menu.fix() === false) {
+      if (menuLeft === null &&
+        menu.position() === 'left' &&
+        menu.fixed() === false) {
 
         menuLeft = menu;
       }
 
-      if (!menuRight && menu.position() === 'right' &&
-        menu.fix() === false) {
+      if (menuRight === null &&
+        menu.position() === 'right' &&
+        menu.fixed() === false) {
 
         menuRight = menu;
       }
@@ -182,10 +184,10 @@ export default class Main {
       };
 
       this._moveWidth = {
-        left: menuLeft ?
-          parseFloat(menuLeft.root().style('width')) : 0,
-        right: menuRight ?
-          parseFloat(menuRight.root().style('width')) : 0
+        left: menuLeft === null ?
+          0 : parseFloat(menuLeft.root().style('width')),
+        right: menuRight === null ?
+          0 : parseFloat(menuRight.root().style('width'))
       };
     }
 
@@ -194,7 +196,7 @@ export default class Main {
 
     if (delta > 0) {
       if (left > 0) {
-        if (!menuLeft) {
+        if (menuLeft === null) {
           left = 0;
           right = 0;
         } else if (left > this._moveWidth.left) {
@@ -216,7 +218,7 @@ export default class Main {
       }
     } else if (delta < 0) {
       if (right > 0) {
-        if (!menuRight) {
+        if (menuRight === null) {
           left = 0;
           right = 0;
         } else if (right > this._moveWidth.right) {
@@ -401,7 +403,7 @@ export default class Main {
     };
 
     this._menus.forEach((menu) => {
-      if (menu.fix()) {
+      if (menu.fixed() === true) {
         style[menu.position()] = menu.width();
       } else {
         menu.show(false);
@@ -428,13 +430,14 @@ export default class Main {
     let found = null;
 
     this._menus.forEach((menu) => {
-      if (menu.show()) {
+      if (menu.show() === true) {
         found = menu;
         return;
       }
     });
 
-    const menus = found ? [found] : this._menus;
+    const menus = found === null ?
+      this._menus : [found];
 
     menus.forEach((menu) => {
       if (this._panning === false) {
@@ -462,25 +465,27 @@ export default class Main {
     let menuRight = null;
 
     this._menus.forEach((menu) => {
-      if (!menuLeft && menu.position() === 'left' &&
-        menu.fix() === false) {
+      if (menuLeft === null &&
+        menu.position() === 'left' &&
+        menu.fixed() === false) {
 
         menuLeft = menu;
       }
 
-      if (!menuRight && menu.position() === 'right' &&
-        menu.fix() === false) {
+      if (menuRight === null &&
+        menu.position() === 'right' &&
+        menu.fixed() === false) {
 
         menuRight = menu;
       }
     });
 
-    if (!this._moveWidth) {
+    if (this._moveWidth === null) {
       this._moveWidth = {
-        left: menuLeft ?
-          parseFloat(menuLeft.root().style('width')) : 0,
-        right: menuRight ?
-          parseFloat(menuRight.root().style('width')) : 0
+        left: menuLeft === null ?
+          0 : parseFloat(menuLeft.root().style('width')),
+        right: menuRight === null ?
+          0 : parseFloat(menuRight.root().style('width'))
       };
     }
 
@@ -489,24 +494,24 @@ export default class Main {
         return;
       }
 
-      if (menuLeft && menuLeft.show()) {
+      if (menuLeft !== null && menuLeft.show() === true) {
         menuLeft.show(false);
-      } else if (menuRight && menuRight.show()) {
+      } else if (menuRight !== null && menuRight.show() === true) {
         menuRight.show(false);
       }
     } else if (swipeEvent.deltaX > 0) {
-      if (menuRight && menuRight.show()) {
+      if (menuRight !== null && menuRight.show() === true) {
         menuRight.show(false);
         this._transit();
-      } else if (menuLeft) {
+      } else if (menuLeft !== null) {
         menuLeft.show(true);
         this._transit('left');
       }
     } else if (swipeEvent.deltaX < 0) {
-      if (menuLeft && menuLeft.show()) {
+      if (menuLeft !== null && menuLeft.show() === true) {
         menuLeft.show(false);
         this._transit();
-      } else if (menuRight) {
+      } else if (menuRight !== null) {
         menuRight.show(true);
         this._transit('right');
       }
