@@ -110,7 +110,7 @@ tr.selected+tr .scola.item>* {
 .scola.item:not(.disabled) .scola.button button:not([tabindex="-1"]):focus,
 .scola.item:not(.disabled) .scola.switch button:not([tabindex="-1"]):focus,
 .scola.item:not(.disabled) .scola.text button:not([tabindex="-1"]):focus,
-.scola.item.date button:not(.disabled):focus,
+.scola.item.date .scola.select button:not(.disabled):focus,
 .scola.pop .scola.button button:focus,
 .scola.scroller:not(.disabled) button:not([tabindex="-1"]):focus {
   border: 1px dotted #000 !important;
