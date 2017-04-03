@@ -78,7 +78,7 @@ tr.selected+tr .scola.item>* {
   cursor: default !important;
 }
 
-.scola.control.button:active:not(.disabled),
+.scola.control.button:active:not(.disabled):not(.toggle),
 .scola.control.button.disabled button,
 .scola.item.button.disabled button,
 .scola.item.disabled .scola.button button,
@@ -86,7 +86,8 @@ tr.selected+tr .scola.item>* {
 .scola.item.disabled .scola.input input,
 .scola.item.disabled .scola.scroller .scola.scroller,
 .scola.item.disabled .scola.switch .scola.area,
-.scola.item.disabled .scola.text button {
+.scola.item.disabled .scola.text button,
+.scola.list .scola.title.click:active {
   opacity: 0.5;
 }
 
@@ -136,6 +137,18 @@ tr.selected+tr .scola.item>* {
   transform: rotateY(180deg);
 }
 
+.scola.graph.maximized {
+  left: 0;
+  padding: 0 !important;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+}
+
+.scola.graph.maximized .scola.body {
+  border-radius: none !important;
+}
+
 @keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
@@ -151,6 +164,9 @@ tr.selected+tr .scola.item>* {
   }
   .scola.item>* {
     border-top-width: 0.5px !important;
+  }
+  .scola.list {
+    border-width: 0.5px !important;
   }
   .scola.list .scola.body {
     border-width: 0.5px 0 !important;
@@ -183,5 +199,22 @@ tr.selected+tr .scola.item>* {
   .scola.table th,
   .scola.table td {
     border-width: 0.5px 0 !important;
+  }
+}
+
+@media only screen and (orientation:portrait) {
+  .scola.graph.maximized {
+    transform: rotate(-90deg);
+    transform-origin: top left;
+    width: 100vh !important;
+    height: 100vw !important;
+    margin-top: 100vh;
+  }
+}
+
+@media only screen and (orientation:landscape) {
+  .scola.graph.maximized {
+    width: 100vw !important;
+    height: 100vh !important;
   }
 }
