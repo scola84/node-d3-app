@@ -159,46 +159,21 @@ tr.selected+tr .scola.item>* {
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
-  .scola.graph .scola.body {
-    border-width: 0.5px 0 !important;
-  }
-  .scola.item>* {
-    border-top-width: 0.5px !important;
-  }
-  .scola.list {
-    border-width: 0.5px !important;
-  }
-  .scola.list .scola.body {
-    border-width: 0.5px 0 !important;
-  }
-  .scola.menu {
-    border-width: 0.5px !important;
-  }
-  .scola.panel .scola.header {
-    border-bottom-width: 0.5px !important;
-  }
-  .scola.panel .scola.footer {
-    border-top-width: 0.5px !important;
-  }
-  .scola.pop .scola.buttons .scola.button {
-    border-top-width: 0.5px !important;
-  }
-  .scola.pop .scola.buttons .scola.button .scola.border {
-    width: 0.5px !important;
-  }
-  .scola.tab.inline .scola.buttons .scola.inner {
-    border-width: 0.5px !important;
-  }
-  .scola.tab.inline .scola.buttons .scola.button .scola.border {
-    border-left-width: 0.5px !important;
-  }
-  .scola.tab.panel .scola.buttons {
-    border-top-width: 0.5px !important;
-  }
+  .scola.control.bar.inline,
+  .scola.control.button.inline .scola.border,
+  .scola.graph .scola.body,
+  .scola.list,
+  .scola.list .scola.body,
+  .scola.menu,
+  .scola.item>*,
+  .scola.panel .scola.footer,
+  .scola.panel .scola.header,
+  .scola.pop .scola.buttons .scola.button,
+  .scola.pop .scola.buttons .scola.button .scola.border,
   .scola.table .scola.body,
   .scola.table th,
   .scola.table td {
-    border-width: 0.5px 0 !important;
+    border-width: 0.5px !important;
   }
 }
 
