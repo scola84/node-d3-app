@@ -142,7 +142,6 @@ tr.selected+tr .scola.item>* {
   padding: 0 !important;
   position: fixed;
   top: 0;
-  z-index: 1;
 }
 
 .scola.graph.maximized .scola.body {
