@@ -160,6 +160,7 @@ tr.selected+tr .scola.item>* {
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
   .scola.control.bar.inline,
   .scola.control.button.inline .scola.border,
+  .scola.control.bar.main .scola.top,
   .scola.graph .scola.body,
   .scola.list,
   .scola.list .scola.body,
