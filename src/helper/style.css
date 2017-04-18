@@ -123,6 +123,9 @@ tr.selected+tr .scola.item>* {
 .scola.item .scola.icon button:before {
   display: block;
   width: 100%;
+}
+
+.ion-ios-arrow-thin-right:before {
   margin-top: -1px
 }
 
