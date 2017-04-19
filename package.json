@@ -8,11 +8,7 @@
   "main": "./index.js",
   "jsnext:main": "./index.js",
   "dependencies": {
-    "@scola/d3-gesture": "^1.1.0",
-    "@scola/d3-media": "^1.1.0",
-    "@scola/d3-slider": "^1.2.0",
-    "d3-selection": "^1.0.3",
-    "d3-selection-multi": "^1.0.0",
-    "d3-transition": "^1.0.3"
+    "@scola/d3-slider": "^2.0.0",
+    "d3": "^4.8.0"
   }
 }
