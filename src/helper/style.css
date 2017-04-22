@@ -125,6 +125,7 @@ tr.selected+tr .scola.item>* {
   width: 100%;
 }
 
+.ion-load-d:before,
 .ion-ios-arrow-thin-right:before {
   margin-top: -1px
 }
