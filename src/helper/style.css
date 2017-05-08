@@ -184,15 +184,5 @@ tr.selected+tr .scola.item>* {
   .scola.graph.maximized {
     transform: rotate(-90deg);
     transform-origin: top left;
-    width: 100vh !important;
-    height: 100vw !important;
-    margin-top: 100vh;
-  }
-}
-
-@media only screen and (orientation:landscape) {
-  .scola.graph.maximized {
-    width: 100vw !important;
-    height: 100vh !important;
   }
 }
