@@ -95,7 +95,7 @@ tr.selected+tr .scola.item>* {
 .scola.item.nav:active:not(.disabled),
 .scola.item.radio:active:not(.disabled),
 .scola.pop .scola.body .scola.buttons .scola.button:active,
-.scola.table.click tr:not(.message):active {
+.scola.table.click tbody tr:not(.message):active {
   background: #CCC !important;
 }
 
