@@ -185,9 +185,9 @@ export default class Main {
 
       this._moveWidth = {
         left: menuLeft === null ?
-          0 : parseFloat(menuLeft.root().style('width')),
+          0 : menuLeft.root().width(),
         right: menuRight === null ?
-          0 : parseFloat(menuRight.root().style('width'))
+          0 : menuRight.root().width()
       };
     }
 
@@ -482,10 +482,8 @@ export default class Main {
 
     if (this._moveWidth === null) {
       this._moveWidth = {
-        left: menuLeft === null ?
-          0 : parseFloat(menuLeft.root().style('width')),
-        right: menuRight === null ?
-          0 : parseFloat(menuRight.root().style('width'))
+        left: menuLeft === null ? 0 : menuLeft.root().width(),
+        right: menuRight === null ? 0 : menuRight.root().width()
       };
     }
 
