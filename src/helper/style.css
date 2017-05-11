@@ -145,10 +145,15 @@ tr.selected+tr .scola.item>* {
   padding: 0 !important;
   position: fixed;
   top: 0;
+  z-index: 2;
 }
 
 .scola.graph.maximized .scola.body {
   border-radius: none !important;
+}
+
+.scola.panel.maximized fieldset>div>.scola.control.bar.main {
+  display: none;
 }
 
 @keyframes spin {
