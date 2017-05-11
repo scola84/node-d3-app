@@ -1,6 +1,6 @@
 {
   "name": "@scola/d3-app",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "App",
   "repository": "github:scola84/node-d3-app",
   "author": "M.C. van den Boogaart <scola@kvdb.name>",
