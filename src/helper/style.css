@@ -90,6 +90,7 @@ tr.selected+tr .scola.item>* {
 .scola.item.disabled .scola.scroller .scola.scroller,
 .scola.item.disabled .scola.switch .scola.area,
 .scola.item.disabled .scola.text button,
+.scola.link:active,
 .scola.list .scola.title.click:active {
   opacity: 0.5;
 }
@@ -109,15 +110,17 @@ tr.selected+tr .scola.item>* {
   border-top-color: inherit !important;
 }
 
-.scola.control.button:not(.disabled) button:not([tabindex="-1"]):focus,
-.scola.item.button:not(.disabled) button:not([tabindex="-1"]):focus,
-.scola.item:not(.disabled) .scola.button button:not([tabindex="-1"]):focus,
-.scola.item:not(.disabled) .scola.switch button:not([tabindex="-1"]):focus,
-.scola.item:not(.disabled) .scola.text button:not([tabindex="-1"]):focus,
-.scola.item.date .scola.select button:not(.disabled):focus,
-.scola.pop .scola.button button:focus,
-.scola.scroller:not(.disabled) button:not([tabindex="-1"]):focus {
-  border: 1px dotted #000 !important;
+@media only screen and (min-width: 64em) {
+  .scola.control.button:not(.disabled) button:not([tabindex="-1"]):focus,
+  .scola.item.button:not(.disabled) button:not([tabindex="-1"]):focus,
+  .scola.item:not(.disabled) .scola.button button:not([tabindex="-1"]):focus,
+  .scola.item:not(.disabled) .scola.switch button:not([tabindex="-1"]):focus,
+  .scola.item:not(.disabled) .scola.text button:not([tabindex="-1"]):focus,
+  .scola.item.date .scola.select button:not(.disabled):focus,
+  .scola.pop .scola.button button:focus,
+  .scola.scroller:not(.disabled) button:not([tabindex="-1"]):focus {
+    border: 1px dotted #000 !important;
+  }
 }
 
 .scola.icon div:before,
@@ -160,38 +163,18 @@ tr.selected+tr .scola.item>* {
   display: none;
 }
 
+@media only screen and (orientation:portrait) {
+  .scola.graph.maximized {
+    transform: rotate(-90deg);
+    transform-origin: top left;
+  }
+}
+
 @keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
   }
   100% {
     -webkit-transform: rotate(360deg);
-  }
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 2) {
-  .scola.control.bar.inline,
-  .scola.control.button.inline .scola.border,
-  .scola.control.bar.main .scola.top,
-  .scola.graph .scola.body,
-  .scola.list,
-  .scola.list .scola.body,
-  .scola.menu,
-  .scola.item>*,
-  .scola.panel .scola.footer,
-  .scola.panel .scola.header,
-  .scola.pop .scola.buttons .scola.button,
-  .scola.pop .scola.buttons .scola.button .scola.border,
-  .scola.table .scola.body,
-  .scola.table th,
-  .scola.table td {
-    border-width: 0.5px !important;
-  }
-}
-
-@media only screen and (orientation:portrait) {
-  .scola.graph.maximized {
-    transform: rotate(-90deg);
-    transform-origin: top left;
   }
 }
