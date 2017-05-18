@@ -154,12 +154,12 @@ export default class Menu {
     this._visible = value;
 
     if (this._mode !== 'under') {
-      const width = this._root.style('width');
-      const position = value === true ? '0px' : '-' + width;
+      const width = this._root.width();
+      const position = value === true ? 0 : -width;
 
       return this._root
         .transition()
-        .style(this._position, position);
+        .style(this._position, position + 'px');
     }
 
     return true;
@@ -182,8 +182,9 @@ export default class Menu {
     }
 
     if (this._moveStart === null) {
-      this._moveStart = parseFloat(this._root.style(this._position));
-      this._moveWidth = parseFloat(this._root.style('width'));
+      const position = this._root.position();
+      this._moveStart = position[this._position];
+      this._moveWidth = this._root.width();
     }
 
     let value = this._moveStart + delta;
