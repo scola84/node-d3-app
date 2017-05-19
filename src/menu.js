@@ -154,7 +154,7 @@ export default class Menu {
     this._visible = value;
 
     if (this._mode !== 'under') {
-      const width = this._root.width();
+      const width = this._root.boundingRect('width');
       const position = value === true ? 0 : -width;
 
       return this._root
@@ -184,7 +184,7 @@ export default class Menu {
     if (this._moveStart === null) {
       const position = this._root.position();
       this._moveStart = position[this._position];
-      this._moveWidth = this._root.width();
+      this._moveWidth = this._root.boundingRect('width');
     }
 
     let value = this._moveStart + delta;
