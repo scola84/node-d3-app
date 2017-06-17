@@ -81,8 +81,8 @@ tr.selected+tr .scola.item>* {
   cursor: default !important;
 }
 
-.scola.control.button:active:not(.disabled):not(.toggle),
-.scola.control.button.disabled button,
+.scola.control.button.main:active:not(.disabled):not(.toggle),
+.scola.control.button.main.disabled button,
 .scola.item.button.disabled button,
 .scola.item.disabled .scola.button button,
 .scola.item.disabled .scola.icon div,
@@ -197,5 +197,26 @@ tr.selected+tr .scola.item>* {
   }
   100% {
     -webkit-transform: rotate(360deg);
+  }
+}
+
+@media all and (-ms-high-contrast: none) {
+  .ion-ios-arrow-thin-right:before,
+  .ion-load-d:before {
+    margin-top: 3px;
+  }
+}
+
+@media all and (-ms-high-contrast: active) {
+  .ion-ios-arrow-thin-right:before,
+  .ion-load-d:before {
+    margin-top: 3px;
+  }
+}
+
+@supports (-ms-ime-align:auto) {
+  .ion-ios-arrow-thin-right:before,
+  .ion-load-d:before {
+    margin-top: 0;
   }
 }
