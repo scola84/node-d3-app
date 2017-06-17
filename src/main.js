@@ -35,7 +35,7 @@ export default class Main {
       .append('div')
       .classed('scola body', true)
       .styles({
-        'flex': 'auto',
+        'flex': '1 1 0%',
         'position': 'relative'
       });
 
