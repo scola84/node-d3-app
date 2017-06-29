@@ -104,6 +104,7 @@ tr.selected+tr .scola.item>* {
   background: #CCC !important;
 }
 
+.scola.table.item tbody tr:active+tr .scola.item>*,
 .scola.item.check:active:not(.disabled)+.scola.item>*,
 .scola.item.nav:active:not(.disabled)+.scola.item>*,
 .scola.item.radio:active:not(.disabled)+.scola.item>* {
