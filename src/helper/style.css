@@ -65,7 +65,7 @@ input:-webkit-autofill {
 
 .scola.item.menu.selected>*,
 .scola.item.menu.selected+.scola.item>*,
-tr.selected+tr .scola.item>* {
+tr.selected+tr .scola.item.menu>* {
   border-top-color: #007AFF !important;
 }
 
@@ -104,7 +104,10 @@ tr.selected+tr .scola.item>* {
   background: #CCC !important;
 }
 
-.scola.table.item tbody tr:active+tr .scola.item>*,
+.scola.table.item tbody tr:active+tr .scola.item.button>*,
+.scola.table.item tbody tr:active+tr .scola.item.check>*,
+.scola.table.item tbody tr:active+tr .scola.item.nav>*,
+.scola.table.item tbody tr:active+tr .scola.item.radio>*,
 .scola.item.check:active:not(.disabled)+.scola.item>*,
 .scola.item.nav:active:not(.disabled)+.scola.item>*,
 .scola.item.radio:active:not(.disabled)+.scola.item>* {
