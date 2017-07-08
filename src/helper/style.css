@@ -172,6 +172,10 @@ tr.selected+tr .scola.item.menu>* {
   transform: rotateY(180deg);
 }
 
+.leaflet-container * {
+  font-size: 12px;
+}
+
 .scola.graph.maximized {
   left: 0;
   padding: 0 !important;
