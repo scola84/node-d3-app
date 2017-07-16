@@ -74,6 +74,7 @@ tr.selected+tr .scola.item.menu>* {
 }
 
 .scola.control.button.disabled,
+.scola.item .scola.button.disabled button,
 .scola.item.disabled,
 .scola.item.disabled .scola.button button,
 .scola.item.disabled .scola.switch .scola.area,
@@ -84,12 +85,12 @@ tr.selected+tr .scola.item.menu>* {
 .scola.control.button.main:active:not(.disabled):not(.toggle),
 .scola.control.button.main.disabled button,
 .scola.item.button.disabled button,
-.scola.item.disabled .scola.button button,
-.scola.item.disabled .scola.icon div,
-.scola.item.disabled .scola.input input,
-.scola.item.disabled .scola.scroller .scola.scroller,
-.scola.item.disabled .scola.switch .scola.area,
-.scola.item.disabled .scola.text button,
+.scola.item .scola.button.disabled button,
+.scola.item .scola.icon.disabled div,
+.scola.item .scola.input.disabled input,
+.scola.item .scola.scroller.disabled .scola.scroller,
+.scola.item .scola.switch.disabled .scola.area,
+.scola.item .scola.text.disabled button,
 .scola.link:active,
 .scola.list .scola.title.click:active {
   opacity: 0.5;
@@ -112,6 +113,19 @@ tr.selected+tr .scola.item.menu>* {
 .scola.item.nav:active:not(.disabled)+.scola.item>*,
 .scola.item.radio:active:not(.disabled)+.scola.item>* {
   border-top-color: inherit !important;
+}
+
+.scola.item .scola.text a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.scola.item .scola.text a:hover {
+  text-decoration: underline;
+}
+
+.scola.item .scola.text a:active {
+  text-decoration: none;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
