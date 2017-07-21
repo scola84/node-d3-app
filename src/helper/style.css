@@ -128,6 +128,10 @@ tr.selected+tr .scola.item.menu>* {
   text-decoration: none;
 }
 
+.scola.menu .scola.table>.scola.body>.scola.table-wrapper>.scola.scroller {
+  right: -1px !important;
+}
+
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
   .scola.control.bar.inline,
   .scola.control.button.inline .scola.border,
